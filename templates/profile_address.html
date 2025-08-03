@@ -1,0 +1,178 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Daftar Alamat - Terusan Minimarket</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" type="text/css" href="{% static 'global.css' %}">
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <h1>🛒 Terusan Minimarket</h1>
+    <div class="header-right">
+      <div class="search-bar">
+        <input id="searchInput" placeholder="Cari di Terusan Minimarket" type="text" />
+        <button>🔍</button>
+      </div>
+      <div class="header-icons">
+        <a href="{% url 'home' %}" title="Home">
+          <img src="https://cdn-icons-png.flaticon.com/512/1946/1946433.png" alt="Home Icon" />
+        </a>
+        <a id="cart" data-cart-url="{% url 'cart' %}" title="Keranjang">
+          <img src="https://cdn-icons-png.flaticon.com/512/263/263142.png" alt="Cart Icon" />
+          <span id="cartCount" class="cart-count">0</span>
+        </a>
+      </div>
+      <div id="authButtons" class="auth-buttons">
+        <button class="btn btn-outline-primary btn-sm" id="btnLogin">Masuk</button>
+        <button class="btn btn-primary btn-sm" id="btnRegister">Daftar</button>
+      </div>
+      <div id="accountMenu" class="account-menu" style="display: none">
+        <div class="account-menu-trigger">
+          <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="User Icon" />
+          <span id="accountUsername"></span>
+        </div>
+        <div id="accountDropdown" class="account-dropdown">
+          <a href="{% url 'profile' %}">Profil</a>
+          <a href="{% url 'history' %}">Riwayat Pesanan</a>
+          {% if request.user.is_superuser or request.user.is_staff %}
+              <a href="{% url 'admin_dashboard' %}">Admin Dashboard</a>
+            {% endif %}
+          <button id="logoutBtn">Logout</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <div class="container-fluid mt-3">
+    <div class="row">
+      <!-- Sidebar -->
+      <div class="col-md-3">
+        <div class="card mb-3">
+          <div class="card-body">
+            <div class="d-flex align-items-center mb-3">
+              <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="User Avatar" class="rounded-circle me-3" width="60" height="60" />
+              <div style="overflow: hidden;">
+                <h5 id="user-name" style="font-size: 15px;"></h5>
+                <p id="user-email" class="text-muted mb-0" style="font-size: 10px;"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="list-group list-group-flush">
+            <a href="{% url 'profile' %}" class="list-group-item list-group-item-action">
+              <i class="bi bi-person-fill"></i> Informasi Akun
+            </a>
+            <a href="{% url 'profile_address' %}" class="list-group-item list-group-item-action active" aria-current="true">
+              <i class="bi bi-geo-alt-fill"></i> Daftar Alamat
+              <p class="small text-muted mb-0">Pengaturan alamat tujuan</p>
+            </a>
+            <a href="{% url 'history' %}" class="list-group-item list-group-item-action">
+              <i class="bi bi-receipt"></i> Transaksi
+              <p class="small text-muted mb-0">Daftar transaksi pembelanjaanmu</p>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Konten Daftar Alamat -->
+      <div class="col-md-9">
+        <div class="card mb-3">
+          <div class="card-body">
+            <h4 class="card-title">Daftar Alamat</h4>
+            <p class="card-subtitle text-muted mb-3">Kelola alamat pengiriman kamu</p>
+
+            <div id="addressMessage" class="alert alert-info mt-3 mb-4" style="display: none;"></div>
+
+            <div id="addressesList" class="row gy-3"></div>
+
+            <button onclick="openCustomModal()">+ Tambahkan Alamat Baru</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Tambah/Edit Alamat -->
+  <div id="customModal" class="custom-modal">
+    <div class="custom-modal-content">
+      <button class="close-button" onclick="closeCustomModal()">×</button>
+      <h4 class="mb-3">Tambahkan Alamat Baru</h4>
+
+      <form id="addressForm" class="modal-form">
+        <div class="modal-body">
+          <div id="addressFormMessage" class="alert alert-danger d-none"></div>
+
+          <input type="hidden" id="addressId" />
+
+          <!-- <div class="mb-3">
+            <label for="addressNamaAlamatInput" class="form-label">Nama Alamat (misal: Rumah, Kantor)</label>
+            <input type="text" class="form-control" id="addressNamaAlamatInput" required>
+          </div> -->
+
+          <div class="mb-3">
+            <label for="addressReceiverNameInput" class="form-label">Nama Penerima</label>
+            <input type="text" class="form-control" id="addressReceiverNameInput" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="addressReceiverPhoneInput" class="form-label">Telepon Penerima</label>
+            <input type="tel" class="form-control" id="addressReceiverPhoneInput" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="addressFullAddressInput" class="form-label">Alamat Lengkap</label>
+            <textarea class="form-control" id="addressFullAddressInput" rows="3" required></textarea>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="addressRtRwInput" class="form-label">RT/RW</label>
+              <input type="text" class="form-control" id="addressRtRwInput">
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="addressPostalCodeInput" class="form-label">Kode Pos</label>
+              <input type="text" class="form-control" id="addressPostalCodeInput">
+            </div>
+          </div>
+
+          <!-- <div class="mb-3">
+            <label for="addressProvinceInput" class="form-label">Provinsi</label>
+            <input type="text" class="form-control" id="addressProvinceInput" required>
+          </div> -->
+
+            <!-- <div class="mb-3">
+              <label for="addressKabupatenInput" class="form-label">Kabupaten</label>
+              <input type="text" class="form-control" id="addressKabupatenInput" required>
+            </div> -->
+
+          <!-- <div class="mb-3">
+            <label for="addressCityInput" class="form-label">Kota/Kecamatan</label>
+            <input type="text" class="form-control" id="addressCityInput" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="addressLocationDetailsInput" class="form-label">Detail Lokasi (patokan)</label>
+            <input type="text" class="form-control" id="addressLocationDetailsInput">
+          </div> -->
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" id="btnSaveAddress" class="btn btn-primary w-100">Simpan Alamat</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="{% static 'profile.js' %}?v=2"></script>
+  <script src="{% static 'dashboard.js' %}?v=5"></script>
+</body>
+</html>

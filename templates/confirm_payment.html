@@ -1,0 +1,135 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Konfirmasi Pembayaran | TerusanMinimarket</title>
+    <link rel="stylesheet" type="text/css" href="{% static '/global.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static '/confirm_payment.css' %}">
+</head>
+<body id="confirm-payment-page">
+<header>
+    <h1>🛒 Terusan Minimarket</h1>
+    <div class="header-right">
+        <div class="search-bar">
+            <input id="searchInput" placeholder="Cari di Terusan Minimarket" type="text" />
+            <button>🔍</button>
+        </div>
+
+        <div class="header-icons">
+          <a href="{% url 'home' %}" title="Home">
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/1946/1946433.png"
+              alt="Home Icon"
+            />
+          </a>
+          <a href="{% url 'cart' %}" title="Keranjang">
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/263/263142.png"
+              alt="Cart Icon"
+            />
+            <span id="cartCount" class="cart-count">0</span>
+          </a>
+        </div>
+        <div id="accountMenu" class="account-menu" style="display: none">
+            <div class="account-menu-trigger">
+                <img
+                  src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+                  alt="User Icon"
+                />
+                <span id="accountUsername"></span>
+            </div>
+            <div id="accountDropdown" class="account-dropdown">
+                <a href="{% url 'profile' %}">Profil</a>
+                <a href="{% url 'history' %}">Riwayat Pesanan</a>
+                <button id="logoutBtn">Logout</button>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="container">
+    <div class="confirmation-form-container">
+        <h3>Konfirmasi Pembayaran Anda</h3>
+        <p>Mohon isi formulir di bawah ini untuk mengonfirmasi pembayaran Anda. Pastikan semua detail sudah benar.</p>
+        <form id="paymentConfirmationForm" action="#" method="POST" enctype="multipart/form-data">
+            {% csrf_token %} {# Include this for Django forms #}
+            <div class="form-group">
+                <label for="orderId">Nomor Pesanan:</label>
+                <input type="text" id="orderId" name="orderId" placeholder="Misal: TM20250629-001" required>
+            </div>
+            <div class="form-group">
+                <label for="bankName">Bank Asal Pengirim:</label>
+                <input type="text" id="bankName" name="bankName" placeholder="Misal: BCA, Mandiri" required>
+            </div>
+            <div class="form-group">
+                <label for="accountHolder">Nama Pemilik Rekening Pengirim:</label>
+                <input type="text" id="accountHolder" name="accountHolder" placeholder="Nama Lengkap Anda" required>
+            </div>
+            <div class="form-group">
+                <label for="transferAmount">Jumlah Transfer:</label>
+                <input type="text" id="transferAmount" name="transferAmount" placeholder="Misal: 150.000 (tanpa titik/koma)" required>
+            </div>
+            <div class="form-group">
+                <label for="transferDate">Tanggal Transfer:</label>
+                <input type="date" id="transferDate" name="transferDate" required>
+            </div>
+            <div class="form-group">
+                <label for="proofImage">Unggah Bukti Transfer (Gambar):</label>
+                <input type="file" id="proofImage" name="proofImage" accept="image/*" required>
+            </div>
+            <div class="form-group">
+                <label for="notes">Catatan Tambahan (Opsional):</label>
+                <textarea id="notes" name="notes" rows="4" placeholder="Misal: Pembayaran untuk barang X dan Y"></textarea>
+            </div>
+            <button type="submit">Kirim Konfirmasi</button>
+        </form>
+    </div>
+</main>
+
+<footer>
+      <div class="info-section">
+        <div class="info-grid">
+          <div class="method-section">
+            <h3>Metode Pembayaran</h3>
+            <div class="logos payment-logos">
+              <img src="https://buatlogoonline.com/wp-content/uploads/2022/10/Logo-BCA-PNG.png" alt="Bank BCA" />
+              <img src="https://e7.pngegg.com/pngimages/24/85/png-clipart-bank-mandiri-logo-credit-card-bank-text-logo.png" alt="Bank Mandiri" />
+              <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjeXjr9tLxk36ccLwYO4m3m98zyLhfjALPaDtITFj4gG-XTLEIiNT2wasZvIsHs33UjuPzhGKzWZiL5TSVrFzaTBeiPuIYUwv7kRDEafzuVMd4MA0UI33_JzUPUiwfv9ZJoeo_l8xjmOVh-gqP0iG6qejC0Rl2aVfG49Y0QnVCDbadrR6CUdJ7rMQ/w320-h271/Bank%20BRI%20Logo.png" alt="Bank BRI" />
+              <img src="https://images.seeklogo.com/logo-png/35/1/bank-bni-logo-png_seeklogo-355606.png" alt="Bank BNI" />
+              <img src="https://i.pinimg.com/736x/f5/8c/a3/f58ca3528b238877e9855fcac1daa328.jpg" alt="DANA" />
+              <img src="https://i.pinimg.com/736x/60/42/c3/6042c3148add711c946833bbc2b90f6d.jpg" alt="OVO" />
+              <img src="https://assets-a1.kompasiana.com/items/album/2023/04/13/beli-saldo-paypal-via-linkaja-6437c7be4addee244748a212.png" alt="LinkAja" />
+              <img src="https://images.seeklogo.com/logo-png/39/1/quick-response-code-indonesia-standard-qris-logo-png_seeklogo-391791.png" alt="Qris" />
+            </div>
+          </div>
+
+          <div class="customer-service">
+            <h3>Layanan Pelanggan</h3>
+            <ul>
+              <li><a href="{% url 'help' %}">Bantuan & FAQ</a></li>
+              <li><a href="{% url 'tutorial' %}">Cara Belanja</a></li>
+              <li><a href="{% url 'return' %}">Pengembalian Barang</a></li>
+              <li><a href="{% url 'privacy' %}">Kebijakan Privasi</a></li>
+            </ul>
+          </div>
+
+          <div class="contact-info">
+            <h3>Hubungi Kami</h3>
+            <a href="https://wa.me/+6283808802544" target="_blank">
+              <i class="fab fa-whatsapp"></i> Chat via WhatsApp</a
+            >
+            <p>Jam Operasional: 08:00 - 21:00 WIB (Setiap Hari)</p>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 TerusanMinimarket. All Rights Reserved.</p>
+      </div>
+    </footer>
+
+<script src="{% static '/dashboard.js' %}"></script>
+<script src="{% static '/confirm_payment.js' %}"></script>
+</body>
+</html>

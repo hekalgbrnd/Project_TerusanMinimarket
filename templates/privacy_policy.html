@@ -1,0 +1,347 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Kebijakan Privasi | TerusanMinimarket</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'global.css' %}" />
+
+  </head>
+  <body>
+    <header>
+      <h1>🛒 Terusan Minimarket</h1>
+      <div class="header-right">
+        <div class="search-bar">
+          <input
+            id="searchInput"
+            type="text"
+            placeholder="Cari di Terusan Minimarket"
+          />
+          <button>🔍</button>
+        </div>
+
+        <div class="header-icons">
+          <a href="{% url 'home' %}" title="Home">
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/1946/1946433.png"
+              alt="Home Icon"
+            />
+          </a>
+          <a href="{% url 'cart' %}" title="Keranjang">
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/263/263142.png"
+              alt="Cart Icon"
+            />
+          </a>
+        </div>
+
+        <div id="authButtons" class="auth-buttons">
+          <button class="btn btn-outline-primary btn-sm" id="btnLogin">
+            Masuk
+          </button>
+          <button class="btn btn-primary btn-sm" id="btnRegister">
+            Daftar
+          </button>
+        </div>
+
+        <div id="accountMenu" class="account-menu" style="display: none">
+          <div class="account-menu-trigger">
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+              alt="User Icon"
+            />
+            <span id="accountUsername"></span>
+          </div>
+          <div id="accountDropdown" class="account-dropdown">
+            <a href="{% url 'profile' %}">Profil</a>
+            <a href="{% url 'history' %}">Riwayat Pesanan</a>
+            <button id="logoutBtn">Logout</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div class="privacy-policy-container">
+        <h2>Kebijakan Privasi TerusanMinimarket</h2>
+        <p>Terakhir diperbarui: 3 Juni 2025</p>
+
+        <p>
+          TerusanMinimarket berkomitmen untuk melindungi privasi data pribadi
+          Anda. Kebijakan Privasi ini menjelaskan bagaimana kami mengumpulkan,
+          menggunakan, mengungkapkan, dan melindungi informasi Anda saat Anda
+          mengunjungi dan menggunakan situs web dan layanan kami.
+        </p>
+
+        <h3>1. Informasi yang Kami Kumpulkan</h3>
+        <p>Kami dapat mengumpulkan jenis informasi berikut:</p>
+        <ul>
+          <li>
+            Informasi Pribadi: Nama, alamat email, nomor telepon, alamat
+            pengiriman, dan informasi pembayaran saat Anda membuat akun atau
+            melakukan pembelian.
+          </li>
+          <li>
+            Informasi Penggunaan: Data tentang bagaimana Anda mengakses dan
+            menggunakan layanan kami, seperti alamat IP, jenis browser, halaman
+            yang dikunjungi, waktu kunjungan, dan data navigasi lainnya.
+          </li>
+        </ul>
+
+        <h3>2. Bagaimana Kami Menggunakan Informasi Anda</h3>
+        <p>
+          Kami menggunakan informasi yang kami kumpulkan untuk berbagai tujuan,
+          termasuk:
+        </p>
+        <ul>
+          <li>Memproses pesanan dan transaksi Anda.</li>
+          <li>Menyediakan, mengoperasikan, dan memelihara layanan kami.</li>
+          <li>Meningkatkan, mempersonalisasi, dan memperluas layanan kami.</li>
+          <li>
+            Memahami dan menganalisis bagaimana Anda menggunakan layanan kami.
+          </li>
+          <li>
+            Mengembangkan produk, layanan, fitur, dan fungsionalitas baru.
+          </li>
+          <li>
+            Berkomunikasi dengan Anda, baik secara langsung maupun melalui salah
+            satu mitra kami, termasuk untuk layanan pelanggan, untuk memberi
+            Anda pembaruan dan informasi lain yang berkaitan dengan layanan, dan
+            untuk tujuan pemasaran dan promosi.
+          </li>
+          <li>
+            Mengirimkan email terkait layanan (misalnya,
+            kode otp).
+          </li>
+          <li>Mencegah penipuan dan menjaga keamanan layanan kami.</li>
+        </ul>
+
+        <h3>3. Pembagian Informasi Anda</h3>
+        <p>
+          Kami tidak akan menjual atau menyewakan informasi pribadi Anda kepada
+          pihak ketiga. Kami dapat membagikan informasi Anda dengan:
+        </p>
+        <ul>
+          <li>
+            Penyedia Layanan Pihak Ketiga: Mitra yang membantu kami
+            mengoperasikan bisnis kami, seperti penyedia pembayaran, layanan
+            pengiriman, dan penyedia hosting. Mereka hanya diizinkan untuk
+            menggunakan informasi Anda untuk tujuan menyediakan layanan yang
+            mereka berikan kepada kami.
+          </li>
+          <li>
+            Kepatuhan Hukum: Jika diwajibkan oleh hukum atau dalam tanggapan
+            yang sah terhadap permintaan pemerintah (misalnya, surat perintah
+            penggeledahan, perintah pengadilan, atau panggilan pengadilan).
+          </li>
+          <li>
+            Perlindungan Hak: Untuk melindungi hak, properti, atau keamanan
+            TerusanMinimarket, pengguna kami, atau publik, sejauh yang diizinkan
+            oleh hukum.
+          </li>
+        </ul>
+
+        <h3>4. Keamanan Data</h3>
+        <p>
+          Kami menerapkan langkah-langkah keamanan teknis dan organisasi yang
+          wajar untuk melindungi informasi pribadi Anda dari akses tidak sah,
+          penggunaan, pengungkapan, perubahan, atau penghancuran. Namun, tidak
+          ada metode transmisi data melalui internet atau penyimpanan elektronik
+          yang 100% aman.
+        </p>
+
+        <h3>5. Hak Anda</h3>
+        <p>
+          Anda memiliki hak-hak tertentu terkait informasi pribadi Anda,
+          termasuk hak untuk:
+        </p>
+        <ul>
+          <li>
+            Mengakses dan mendapatkan salinan informasi pribadi Anda yang kami
+            pegang.
+          </li>
+          <li>
+            Meminta koreksi atas informasi pribadi yang tidak akurat atau tidak
+            lengkap.
+          </li>
+          <li>
+            Meminta penghapusan informasi pribadi Anda dalam keadaan tertentu.
+          </li>
+          <li>
+            Menarik persetujuan Anda kapan saja (jika pemrosesan didasarkan pada
+            persetujuan).
+          </li>
+        </ul>
+        <p>
+          Untuk menggunakan hak-hak ini, silakan hubungi kami melalui informasi
+          kontak di bawah ini.
+        </p>
+
+        <h3>6. Perubahan pada Kebijakan Privasi Ini</h3>
+        <p>
+          Kami dapat memperbarui Kebijakan Privasi ini dari waktu ke waktu. Kami
+          akan memberitahu Anda tentang perubahan apa pun dengan memposting
+          Kebijakan Privasi baru di halaman ini dan memperbarui tanggal
+          "Terakhir diperbarui" di bagian atas. Anda disarankan untuk meninjau
+          Kebijakan Privasi ini secara berkala untuk setiap perubahan.
+        </p>
+
+        <h3>7. Hubungi Kami</h3>
+        <p>
+          Jika Anda memiliki pertanyaan atau kekhawatiran tentang Kebijakan
+          Privasi ini, silakan hubungi kami:
+        </p>
+        <p>Telepon/WA: 081317599188</p>
+        <p>
+          Alamat: Jalan Kramat Jaya no.34 Semper Barat, Cilincing, Jakarta Utara
+          DKI Jakarta, Indonesia
+        </p>
+      </div>
+    </main>
+
+    <footer>
+      <div class="info-section">
+        <div class="info-grid">
+          <div class="method-section">
+            <h3>Metode Pembayaran</h3>
+            <div class="logos payment-logos">
+              <img src="https://buatlogoonline.com/wp-content/uploads/2022/10/Logo-BCA-PNG.png" alt="Bank BCA" />
+              <img src="https://e7.pngegg.com/pngimages/24/85/png-clipart-bank-mandiri-logo-credit-card-bank-text-logo.png" alt="Bank Mandiri" />
+              <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjeXjr9tLxk36ccLwYO4m3m98zyLhfjALPaDtITFj4gG-XTLEIiNT2wasZvIsHs33UjuPzhGKzWZiL5TSVrFzaTBeiPuIYUwv7kRDEafzuVMd4MA0UI33_JzUPUiwfv9ZJoeo_l8xjmOVh-gqP0iG6qejC0Rl2aVfG49Y0QnVCDbadrR6CUdJ7rMQ/w320-h271/Bank%20BRI%20Logo.png" alt="Bank BRI" />
+              <img src="https://images.seeklogo.com/logo-png/35/1/bank-bni-logo-png_seeklogo-355606.png" alt="Bank BNI" />
+              <img src="https://i.pinimg.com/736x/f5/8c/a3/f58ca3528b238877e9855fcac1daa328.jpg" alt="DANA" />
+              <img src="https://i.pinimg.com/736x/60/42/c3/6042c3148add711c946833bbc2b90f6d.jpg" alt="OVO" />
+              <img src="https://assets-a1.kompasiana.com/items/album/2023/04/13/beli-saldo-paypal-via-linkaja-6437c7be4addee244748a212.png" alt="LinkAja" />
+              <img src="https://images.seeklogo.com/logo-png/39/1/quick-response-code-indonesia-standard-qris-logo-png_seeklogo-391791.png" alt="Qris" />
+            </div>
+          </div>
+
+          <div class="customer-service">
+            <h3>Layanan Pelanggan</h3>
+            <ul>
+              <li><a href="{% url 'help' %}">Bantuan & FAQ</a></li>
+              <li><a href="{% url 'tutorial' %}">Cara Belanja</a></li>
+              <li><a href="{% url 'return' %}">Pengembalian Barang</a></li>
+              <li><a href="{% url 'privacy' %}">Kebijakan Privasi</a></li>
+            </ul>
+          </div>
+
+          <div class="contact-info">
+            <h3>Hubungi Kami</h3>
+            <a href="https://wa.me/+6283808802544" target="_blank">
+              <i class="fab fa-whatsapp"></i> Chat via WhatsApp</a
+            >
+            <p>Jam Operasional: 08:00 - 21:00 WIB (Setiap Hari)</p>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 TerusanMinimarket. All Rights Reserved.</p>
+      </div>
+    </footer>
+
+    <div class="toast" id="toast"></div>
+
+    <div id="authModal" class="modal">
+      <div class="modal-content">
+        <span class="close-button" id="closeAuthModal">&times;</span>
+        <div id="loginForm" class="auth-form">
+          <h2>Masuk</h2>
+          <input
+            type="text"
+            id="loginId"
+            placeholder="Username / Email / No. Telepon"
+            required
+          />
+          <input
+            type="password"
+            id="loginPassword"
+            placeholder="Kata Sandi"
+            required
+          />
+          <p id="loginError" class="error-message"></p>
+          <button type="submit" class="btn btn-primary" id="btnLoginSubmit">
+            Masuk
+          </button>
+          <button type="button" class="btn btn-link" id="showRegister">
+            Belum punya akun? Daftar di sini
+          </button>
+          <button type="button" class="btn btn-link" id="showForgotPassword">
+            Lupa Kata Sandi?
+          </button>
+        </div>
+
+        <div id="registerForm" class="auth-form">
+          <h2>Daftar</h2>
+          <input type="text" id="regUsername" placeholder="Username" required />
+          <input type="text" id="regName" placeholder="Nama Lengkap" required />
+          <input type="email" id="regEmail" placeholder="Email" required />
+          <input
+            type="tel"
+            id="regPhone"
+            placeholder="Nomor Telepon (cth: 081234567890)"
+            required
+          />
+          <input
+            type="password"
+            id="regPassword"
+            placeholder="Kata Sandi"
+            required
+          />
+          <p id="registerError" class="error-message"></p>
+          <button type="submit" class="btn btn-primary" id="btnRegisterSubmit">
+            Daftar
+          </button>
+          <button type="button" class="btn btn-link" id="showLoginFromRegister">
+            Sudah punya akun? Masuk
+          </button>
+        </div>
+
+        <div id="forgotPasswordForm" class="auth-form">
+          <h2>Lupa Kata Sandi</h2>
+          <p>
+            Masukkan Username / Email / No. Telepon Anda untuk reset kata sandi.
+          </p>
+          <input
+            type="text"
+            id="forgotId"
+            placeholder="Username / Email / No. Telepon"
+            required
+          />
+          <p id="forgotError" class="error-message"></p>
+          <button type="submit" class="btn btn-primary" id="btnResetPassword">
+            Reset Kata Sandi
+          </button>
+          <button type="button" class="btn btn-link" id="showLoginFromForgot">
+            Kembali ke Login
+          </button>
+        </div>
+
+        <div id="otpVerificationForm" class="auth-form" style="display: none">
+          <h2>Verifikasi OTP</h2>
+          <p id="otpMessage">
+            OTP telah dikirim ke email Anda. Silakan masukkan kode di bawah ini.
+          </p>
+          <input
+            type="text"
+            id="otpInput"
+            placeholder="Masukkan OTP"
+            required
+            maxlength="6"
+          />
+          <p id="otpError" class="error-message"></p>
+          <button type="submit" class="btn btn-primary" id="btnVerifyOtp">
+            Verifikasi
+          </button>
+          <button type="button" class="btn btn-link" id="showLoginFromOtp">
+            Kembali ke Login
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="{% static 'dashboard.js' %}"></script>
+    <script src="{% static 'privacy_policy.js' %}"></script>
+  </body>
+</html>

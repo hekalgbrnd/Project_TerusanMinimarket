@@ -1,0 +1,226 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Pembayaran Berhasil! | TerusanMinimarket</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'global.css' %}" />
+    {# Hanya satu link ke global.css #}
+  </head>
+  <body>
+    <header>
+      <h1>🛒 Terusan Minimarket</h1>
+      <div class="header-right">
+        <div class="search-bar">
+          <input
+            id="searchInput"
+            type="text"
+            placeholder="Cari di Terusan Minimarket"
+          />
+          <button>🔍</button>
+        </div>
+
+        <div class="header-icons">
+          <a href="{% url 'home' %}" title="Home">
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/1946/1946433.png"
+              alt="Home Icon"
+            />
+          </a>
+          <a href="{% url 'cart' %}" title="Keranjang">
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/263/263142.png"
+              alt="Cart Icon"
+            />
+          </a>
+        </div>
+
+        <div id="authButtons" class="auth-buttons">
+          <button class="btn btn-outline-primary btn-sm" id="btnLogin">
+            Masuk
+          </button>
+          <button class="btn btn-primary btn-sm" id="btnRegister">
+            Daftar
+          </button>
+        </div>
+
+        <div id="accountMenu" class="account-menu" style="display: none">
+          <div class="account-menu-trigger">
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+              alt="User Icon"
+            />
+            <span id="accountUsername"></span>
+          </div>
+          <div id="accountDropdown" class="account-dropdown">
+            <a href="{% url 'profile' %}">Profil</a>
+            {% if request.user.is_superuser or request.user.is_staff %}
+              <a href="{% url 'admin_dashboard' %}">Admin Dashboard</a>
+            {% endif %}
+            <button id="logoutBtn">Logout</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div class="success-container">
+        <img
+          src="https://cdn-icons-png.flaticon.com/512/190/190411.png"
+          alt="Checkmark Icon"
+          class="success-icon"
+        />
+        <h2>Pembayaran Berhasil!</h2>
+        <p>
+          Terima kasih atas pesanan Anda. Pembayaran Anda telah dikonfirmasi dan
+          pesanan Anda akan segera diproses.
+        </p>
+        <p>Anda akan menerima email konfirmasi dengan detail pesanan Anda.</p>
+
+        <div class="order-details-summary">
+          <h3>Ringkasan Pesanan</h3>
+          <div>
+            <span>Nomor Pesanan:</span>
+            <span id="orderNumber">#TRSMK-5164</span>
+          </div>
+          <div>
+            <span>Metode Pembayaran:</span>
+            <span id="paymentMethod">Qris</span>
+          </div>
+          <div>
+            <span>Alamat Pengiriman:</span>
+            <span id="shippingAddress"
+              >Jl. Raya Kalimalang No.15 Billymoon</span
+            >
+          </div>
+          <div>
+            <span>Estimasi Pengiriman:</span>
+            <span id="deliveryEstimate">10 Menit</span>
+          </div>
+          <div class="total-price">
+            <span>Total Pembayaran:</span>
+            <span id="finalTotalPrice">Rp 27.000</span>
+          </div>
+        </div>
+
+        <div class="action-buttons">
+          <a href="{% url 'home' %}" class="btn btn-primary">Lanjut Belanja</a>
+          <a href="{% url 'history' %}" class="btn btn-outline-primary"
+            >Lihat Riwayat Pesanan</a
+          >
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <div class="info-section">
+        <div class="info-grid">
+          <div class="method-section">
+            <h3>Metode Pembayaran</h3>
+            <div class="logos payment-logos">
+              <img src="https://buatlogoonline.com/wp-content/uploads/2022/10/Logo-BCA-PNG.png" alt="Bank BCA" />
+              <img src="https://e7.pngegg.com/pngimages/24/85/png-clipart-bank-mandiri-logo-credit-card-bank-text-logo.png" alt="Bank Mandiri" />
+              <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjeXjr9tLxk36ccLwYO4m3m98zyLhfjALPaDtITFj4gG-XTLEIiNT2wasZvIsHs33UjuPzhGKzWZiL5TSVrFzaTBeiPuIYUwv7kRDEafzuVMd4MA0UI33_JzUPUiwfv9ZJoeo_l8xjmOVh-gqP0iG6qejC0Rl2aVfG49Y0QnVCDbadrR6CUdJ7rMQ/w320-h271/Bank%20BRI%20Logo.png" alt="Bank BRI" />
+              <img src="https://images.seeklogo.com/logo-png/35/1/bank-bni-logo-png_seeklogo-355606.png" alt="Bank BNI" />
+              <img src="https://i.pinimg.com/736x/f5/8c/a3/f58ca3528b238877e9855fcac1daa328.jpg" alt="DANA" />
+              <img src="https://i.pinimg.com/736x/60/42/c3/6042c3148add711c946833bbc2b90f6d.jpg" alt="OVO" />
+              <img src="https://assets-a1.kompasiana.com/items/album/2023/04/13/beli-saldo-paypal-via-linkaja-6437c7be4addee244748a212.png" alt="LinkAja" />
+              <img src="https://images.seeklogo.com/logo-png/39/1/quick-response-code-indonesia-standard-qris-logo-png_seeklogo-391791.png" alt="Qris" />
+            </div>
+          </div>
+
+          <div class="customer-service">
+            <h3>Layanan Pelanggan</h3>
+            <ul>
+              <li><a href="{% url 'help' %}">Bantuan & FAQ</a></li>
+              <li><a href="{% url 'tutorial' %}">Cara Belanja</a></li>
+              <li><a href="{% url 'return' %}">Pengembalian Barang</a></li>
+              <li><a href="{% url 'privacy' %}">Kebijakan Privasi</a></li>
+            </ul>
+          </div>
+
+          <div class="contact-info">
+            <h3>Hubungi Kami</h3>
+            <a href="https://wa.me/+6283808802544" target="_blank">
+              <i class="fab fa-whatsapp"></i> Chat via WhatsApp</a
+            >
+            <p>Jam Operasional: 08:00 - 21:00 WIB (Setiap Hari)</p>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 TerusanMinimarket. All Rights Reserved.</p>
+      </div>
+    </footer>
+
+    <div id="toast" class="toast"></div>
+
+    <div id="authModal" class="modal">
+      <div class="modal-content">
+        <span class="close-button" id="closeAuthModal">&times;</span>
+        <div id="loginForm">
+          <h3>Masuk</h3>
+          <input type="text" id="loginId" placeholder="Username atau Email" />
+          <input type="password" id="loginPassword" placeholder="Password" />
+          <p class="error-message" id="loginError"></p>
+          <button class="btn btn-primary" id="btnLoginSubmit">Login</button>
+          <p class="form-switch-link">
+            Belum punya akun? <a href="#" id="showRegister">Daftar</a>
+          </p>
+          <p class="form-switch-link">
+            <a href="#" id="showForgotPassword">Lupa Password?</a>
+          </p>
+        </div>
+        <div id="registerForm" style="display: none">
+          <h3>Daftar Akun Baru</h3>
+          <input type="text" id="regUsername" placeholder="Username" />
+          <input type="text" id="regName" placeholder="Nama Lengkap" />
+          <input type="email" id="regEmail" placeholder="Email" />
+          <input type="tel" id="regPhone" placeholder="Nomor Telepon" />
+          <input type="password" id="regPassword" placeholder="Password" />
+          <p class="error-message" id="registerError"></p>
+          <button class="btn btn-primary" id="btnRegisterSubmit">Daftar</button>
+          <p class="form-switch-link">
+            Sudah punya akun? <a href="#" id="showLoginFromRegister">Masuk</a>
+          </p>
+        </div>
+        <div id="forgotPasswordForm" style="display: none">
+          <h3>Lupa Password</h3>
+          <p>Masukkan Username atau Email Anda untuk mereset password.</p>
+          <input type="text" id="forgotId" placeholder="Username atau Email" />
+          <p class="error-message" id="forgotError"></p>
+          <button class="btn btn-primary" id="btnResetPassword">
+            Reset Password
+          </button>
+          <p class="form-switch-link">
+            <a href="#" id="showLoginFromForgot">Kembali ke Login</a>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div id="productDetailModal" class="modal">
+      <div class="modal-content product-detail-modal-content">
+        <span class="close-button" id="closeDetailModal">&times;</span>
+        <div class="modal-body">
+          <img id="modalProductImage" src="" alt="Product Image" />
+          <div class="product-details-info">
+            <h3 id="modalProductName"></h3>
+            <p id="modalProductDescription"></p>
+            <p class="modal-product-price" id="modalProductPrice"></p>
+            <p class="modal-product-stock" id="modalProductStock"></p>
+            <button class="btn btn-success" id="modalAddToCartBtn">
+              Tambah ke Keranjang
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="{% static '/dashboard.js' %}"></script>
+    {# Memuat skrip global #}
+    <script src="{% static 'order_success.js' %}?v=2"></script>
+    {# Memuat skrip khusus halaman ini #}
+  </body>
+</html>

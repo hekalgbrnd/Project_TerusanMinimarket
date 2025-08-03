@@ -1,0 +1,93 @@
+/* Specific styles for the login page, extracted from admin_login.html */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f0f4f8; /* Lighter background for login */
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+}
+
+.login-container {
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.login-container h2 {
+    margin-bottom: 30px;
+    color: #34495e;
+    font-size: 2.2em;
+    font-weight: 700;
+}
+
+.login-form .form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.login-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #4a5568;
+}
+
+.login-form input[type="text"],
+.login-form input[type="password"] {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #dce4eb;
+    border-radius: 8px;
+    font-size: 1em;
+    box-sizing: border-box;
+    background-color: #fdfdfd;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Input focus state */
+.login-form input[type="text"]:focus,
+.login-form input[type="password"]:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.15);
+}
+
+.login-form .btn-login {
+    width: 100%;
+    padding: 14px;
+    background-color: #28a745; /* Green */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1em;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+    margin-top: 15px;
+}
+
+.login-form .btn-login:hover {
+    background-color: #218838;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(40, 167, 69, 0.3);
+}
+
+.login-message {
+    margin-top: 20px;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 0.9em;
+    display: none; /* Hidden by default */
+}
+
+.login-message.error {
+    background-color: #ffebeb;
+    color: #dc3545;
+    border: 1px solid #dc3545;
+}

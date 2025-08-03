@@ -1,0 +1,304 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard | TerusanMinimarket</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'admin_dashboard.css' %}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+      integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+  <body>
+    <div class="admin-wrapper">
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <h2>Admin Panel</h2>
+        </div>
+        <nav class="sidebar-nav">
+          <ul>
+            <li>
+              <a href="#dashboard" class="nav-link active" data-section="dashboard"
+                ><i class="fas fa-tachometer-alt"></i> Dashboard</a
+              >
+            </li>
+            <li>
+              <a href="#products" class="nav-link" data-section="products"
+                ><i class="fas fa-box-open"></i> Produk</a
+              >
+            </li>
+            <li>
+              <a href="#categories" class="nav-link" data-section="categories"
+                ><i class="fas fa-tags"></i> Kategori</a
+              >
+            </li>
+            <li>
+              <a href="#orders" class="nav-link" data-section="orders"
+                ><i class="fas fa-shopping-cart"></i> Pesanan</a
+              >
+            </li>
+            <li>
+              <a href="#users" class="nav-link" data-section="users"
+                ><i class="fas fa-users"></i> Pengguna</a
+              >
+            </li>
+            <li>
+              <a href="#analytics" class="nav-link" data-section="analytics"
+                ><i class="fas fa-chart-line"></i> Analitik</a
+              >
+            </li>
+            <li>
+              <a href="#settings" class="nav-link" data-section="settings"
+                ><i class="fas fa-cog"></i> Pengaturan</a
+              >
+            </li>
+            <li>
+              <a href="{% url 'home' %}" class="nav-link logout-link"
+                ><i class="fas fa-store"></i> Kembali ke Toko</a
+              >
+            </li>
+          </ul>
+        </nav>
+      </aside>
+
+      <main class="main-content">
+        <header class="admin-header">
+          <h1 id="currentSectionTitle">Dashboard</h1>
+          <div class="header-actions">
+            </div>
+        </header>
+
+        <section id="dashboard" class="content-section active">
+          <h2>Ringkasan Dashboard</h2>
+          <div class="stats-grid">
+            <div class="stat-card">
+              <h3>Total Penjualan</h3>
+              <p>Rp 15.000.000</p>
+            </div>
+            <div class="stat-card">
+              <h3>Pesanan Baru</h3>
+              <p>12</p>
+            </div>
+            <div class="stat-card">
+              <h3>Jumlah Produk</h3>
+              <p>250</p>
+            </div>
+            <div class="stat-card">
+              <h3>Pelanggan Baru</h3>
+              <p>8</p>
+            </div>
+          </div>
+
+          <div class="recent-activities">
+            <h2>Aktivitas Terbaru</h2>
+            <ul>
+              <li>Pesanan #1234567 dari John Doe - <span class="status-pending">Pending</span></li>
+              <li>Produk "Keyboard Mekanik RGB" ditambahkan oleh Admin</li>
+              <li>Pengguna "Jane Smith" baru terdaftar</li>
+              <li>Pesanan #1234566 dikirim - <span class="status-completed">Selesai</span></li>
+              <li>Kategori "Elektronik" diperbarui</li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="products" class="content-section">
+            <h2>Manajemen Produk</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nama Produk</th>
+                            <th>Kategori</th>
+                            <th>Harga</th>
+                            <th>Stok</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productTableBody">
+                    </tbody>
+                </table>
+            </div>
+            <!-- <button class="btn btn-success mt-3 add-new-btn" data-target-form="add-product-form"><i class="fas fa-plus"></i> Tambahkan Produk Baru</button> -->
+
+            <div id="add-product-form-div" class="content-section" style="display:none;">
+                <h2>Form Produk Baru</h2>
+                <form id="add-product-form" class="add-product-form">
+                    <div class="form-group">
+                        <label for="productName">Nama Produk:</label>
+                        <input type="text" id="productName" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="productCategory">Kategori:</label>
+                        <select id="productCategory" required>
+                            <option value="">Pilih Kategori</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="productPrice">Harga:</label>
+                        <input type="number" id="productPrice" min="0" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="productStock">Stok:</label>
+                        <input type="number" id="productStock" min="0" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="productDescription">Deskripsi:</label>
+                        <textarea id="productDescription" rows="4"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="productImage">Gambar Produk (opsional):</label>
+                        <input type="file" id="productImage" accept="image/*" />
+                    </div>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Simpan Produk</button>
+                    <button type="button" class="btn btn-outline-secondary cancel-form-btn" data-target-section="products"><i class="fas fa-times"></i> Batal</button>
+                </form>
+            </div>
+        </section>
+
+        <section id="categories" class="content-section">
+            <h2>Manajemen Kategori</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nama Kategori</th>
+                            <th>Jumlah Produk</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="categoryTableBody">
+                    </tbody>
+                </table>
+            </div>
+            <!-- <button class="btn btn-success mt-3 add-new-btn" data-target-form="add-category-form"><i class="fas fa-plus"></i> Tambahkan Kategori Baru</button> -->
+
+            <div id="add-category-form-div" class="content-section" style="display:none;">
+                <h2>Form Kategori Baru</h2>
+                <form id="add-category-form" class="add-category-form">
+                    <div class="form-group">
+                        <label for="categoryName">Nama Kategori:</label>
+                        <input type="text" id="categoryName" required />
+                    </div>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Simpan Kategori</button>
+                    <button type="button" class="btn btn-outline-secondary cancel-form-btn" data-target-section="categories"><i class="fas fa-times"></i> Batal</button>
+                </form>
+            </div>
+        </section>
+
+        <section id="orders" class="content-section">
+          <h2>Manajemen Pesanan</h2>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>ID Pesanan</th>
+                  <th>Pelanggan</th>
+                  <th>Tanggal</th>
+                  <th>Total</th>
+                  <th>Status</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="ordersTableBody">
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="users" class="content-section">
+        <h2>Manajemen Pengguna</h2>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>ID Pengguna</th>
+                <th>Nama Lengkap</th>
+                <th>Email</th>
+                <th>Telepon</th>
+                <th>Status</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="usersTableBody">
+              <!-- Data akan dimuat lewat JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+
+      <section id="analytics" class="content-section">
+        <h2>Analitik Penjualan</h2>
+        <p class="text-muted">Pantau performa toko melalui data penjualan dan produk paling laris.</p>
+
+        <div class="analytics-charts row">
+          <div class="col-md-6 mb-4">
+            <div class="card p-3">
+              <h5>Penjualan Mingguan</h5>
+              <canvas id="weeklySalesChart" height="200"></canvas> <!-- ID disesuaikan -->
+            </div>
+          </div>
+          <div class="col-md-6 mb-4">
+            <div class="card p-3">
+              <h5>Produk Terlaris</h5>
+              <canvas id="topProductsChart" height="200"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <button id="downloadExcelBtn" class="btn btn-primary mt-3">
+          <i class="fas fa-download"></i> Unduh Laporan Penjualan
+        </button>
+      </section>
+
+
+        <section id="settings" class="content-section">
+          <h2>Pengaturan Toko</h2>
+          <form class="settings-form" id="settings-form-id"> {# Added id for explicit form linking #}
+            <h3>Informasi Toko</h3>
+            <div class="form-group">
+                <label for="storeName">Nama Toko:</label>
+                <input type="text" id="storeName" value="TerusanMinimarket" />
+            </div>
+            <div class="form-group">
+                <label for="storeEmail">Email Toko:</label>
+                <input type="email" id="storeEmail" value="info@terusanminimarket.com" />
+            </div>
+            <div class="form-group">
+                <label for="storePhone">Nomor Telepon Toko:</label>
+                <input type="tel" id="storePhone" value="+6281234567890" />
+            </div>
+            <h3>Pengaturan Pengiriman</h3>
+            <div class="form-group">
+                <label for="shippingCost">Biaya Pengiriman Default:</label>
+                <input type="number" id="shippingCost" value="10000" min="0" />
+            </div>
+            <h3>Pengaturan Metode Pembayaran</h3>
+            <div class="form-group">
+                <label for="paymentMethods">Metode Pembayaran Aktif:</label>
+                <div>
+                    <input type="checkbox" id="payMethodBank" /> <label for="payMethodBank">Transfer Bank/E-Money</label><br>
+                    <input type="checkbox" id="payMethodOVO" /> <label for="payMethodOVO">Cash on-Delivery</label><br>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Simpan Pengaturan</button>
+          </form>
+        </section>
+      </main>
+    </div>
+
+    {# For real charts, you'd include a charting library here, e.g., Chart.js #}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{% static 'admin_dashboard.js' %}?v=3" defer></script>
+  </body>
+</html>

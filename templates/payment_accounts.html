@@ -1,0 +1,129 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Metode Pembayaran Toko | TerusanMinimarket</title>
+    <link rel="stylesheet" type="text/css" href="{% static '/global.css' %}">
+</head>
+<body id="shop-payment-page">
+<header>
+    <h1>🛒 Terusan Minimarket</h1>
+    <div class="header-right">
+        <div class="search-bar">
+            <input id="searchInput" placeholder="Cari di Terusan Minimarket" type="text" />
+            <button>🔍</button>
+        </div>
+
+        <div class="header-icons">
+          <a href="{% url 'home' %}" title="Home">
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/1946/1946433.png"
+              alt="Home Icon"
+            />
+          </a>
+          <a href="{% url 'cart' %}" title="Keranjang">
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/263/263142.png"
+              alt="Cart Icon"
+            />
+            <span id="cartCount" class="cart-count">0</span>
+          </a>
+        </div>
+                <div id="accountMenu" class="account-menu" style="display: none">
+            <div class="account-menu-trigger">
+                <img
+                  src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+                  alt="User Icon"
+                />
+                <span id="accountUsername"></span>
+            </div>
+            <div id="accountDropdown" class="account-dropdown">
+                <a href="{% url 'profile' %}">Profil</a>
+                <a href="{% url 'history' %}">Riwayat Pesanan</a>
+                <button id="logoutBtn">Logout</button>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="container">
+    <div class="checkout-container">
+        <section class="payment-info-section">
+            <h3>Metode Pembayaran Toko</h3>
+            <p>Anda dapat melakukan pembayaran untuk pesanan Anda melalui rekening bank atau QRIS di bawah ini.</p>
+
+            <div class="payment-methods-grid" id="paymentMethodsGrid">
+                <div class="payment-method-item" id="bankAccountsSection">
+                    <h4>Rekening Bank Toko</h4>
+                    <div id="bankAccountsList">
+                    </div>
+                </div>
+
+                <div class="payment-method-item" id="qrisSection" style="display: none;">
+                    <h4>Pembayaran QRIS</h4>
+                    <div class="qris-image-container">
+                        <img id="qrisImage" src="" alt="QRIS Code" style="max-width: 250px; height: auto; border: 1px solid #ddd; padding: 5px; margin: 0 auto; display: block;" />
+                        <p class="text-center">Scan QRIS di atas untuk pembayaran.</p>
+                    </div>
+                </div>
+            </div>
+            <p class="small-text">Setelah melakukan pembayaran, mohon konfirmasi melalui halaman riwayat pesanan Anda atau customer service.</p>
+
+            <button id="confirmPaymentBtn" class="confirm-payment-button">Konfirmasi Pembayaran</button>
+        </section>
+    </div>
+</main>
+
+<footer>
+      <div class="info-section">
+        <div class="info-grid">
+          <div class="method-section">
+            <h3>Metode Pembayaran</h3>
+            <div class="logos payment-logos">
+              <img src="https://buatlogoonline.com/wp-content/uploads/2022/10/Logo-BCA-PNG.png" alt="Bank BCA" />
+              <img src="https://e7.pngegg.com/pngimages/24/85/png-clipart-bank-mandiri-logo-credit-card-bank-text-logo.png" alt="Bank Mandiri" />
+              <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjeXjr9tLxk36ccLwYO4m3m98zyLhfjALPaDtITFj4gG-XTLEIiNT2wasZvIsHs33UjuPzhGKzWZiL5TSVrFzaTBeiPuIYUwv7kRDEafzuVMd4MA0UI33_JzUPUiwfv9ZJoeo_l8xjmOVh-gqP0iG6qejC0Rl2aVfG49Y0QnVCDbadrR6CUdJ7rMQ/w320-h271/Bank%20BRI%20Logo.png" alt="Bank BRI" />
+              <img src="https://images.seeklogo.com/logo-png/35/1/bank-bni-logo-png_seeklogo-355606.png" alt="Bank BNI" />
+              <img src="https://i.pinimg.com/736x/f5/8c/a3/f58ca3528b238877e9855fcac1daa328.jpg" alt="DANA" />
+              <img src="https://i.pinimg.com/736x/60/42/c3/6042c3148add711c946833bbc2b90f6d.jpg" alt="OVO" />
+              <img src="https://assets-a1.kompasiana.com/items/album/2023/04/13/beli-saldo-paypal-via-linkaja-6437c7be4addee244748a212.png" alt="LinkAja" />
+              <img src="https://images.seeklogo.com/logo-png/39/1/quick-response-code-indonesia-standard-qris-logo-png_seeklogo-391791.png" alt="Qris" />
+            </div>
+          </div>
+
+          <div class="customer-service">
+            <h3>Layanan Pelanggan</h3>
+            <ul>
+              <li><a href="{% url 'help' %}">Bantuan & FAQ</a></li>
+              <li><a href="{% url 'tutorial' %}">Cara Belanja</a></li>
+              <li><a href="{% url 'return' %}">Pengembalian Barang</a></li>
+              <li><a href="{% url 'privacy' %}">Kebijakan Privasi</a></li>
+            </ul>
+          </div>
+
+          <div class="contact-info">
+            <h3>Hubungi Kami</h3>
+            <a href="https://wa.me/+6283808802544" target="_blank">
+              <i class="fab fa-whatsapp"></i> Chat via WhatsApp</a
+            >
+            <p>Jam Operasional: 08:00 - 21:00 WIB (Setiap Hari)</p>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 TerusanMinimarket. All Rights Reserved.</p>
+      </div>
+    </footer>
+
+<script>
+    const QRIS_IMAGE_STATIC_URL = "{% static 'img/qris.jpg' %}";
+    // Define the URL for the confirmation page in a JavaScript variable
+    const CONFIRMATION_PAYMENT_URL = "{% url 'confirmation_payment' %}";
+</script>
+
+<script src="{% static '/dashboard.js' %}"></script>
+<script src="{% static '/payment_accounts.js' %}"></script>
+</body>
+</html>

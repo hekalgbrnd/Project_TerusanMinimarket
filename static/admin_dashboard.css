@@ -1,0 +1,771 @@
+/* Global Reset - Penting untuk konsistensi di semua browser */
+/* Jika file admin.css hanya dimuat di admin_dashboard.html, ini aman di sini.
+   Jika dimuat di tempat lain, pindahkan ke global.css Anda. */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* Base styles for the admin page body */
+/* Ini hanya akan memengaruhi admin_dashboard.html */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Prioritaskan Inter, fallback ke Segoe UI */
+  background-color: #eef2f5; /* Background yang lebih terang dan modern */
+  color: #333;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom Scrollbar for Webkit browsers (Chrome, Safari, Edge) */
+/* Membuat scrollbar lebih ramping dan sesuai tema */
+::-webkit-scrollbar {
+  width: 8px; /* Lebar scrollbar */
+  height: 8px; /* Tinggi scrollbar untuk horizontal */
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Warna track scrollbar */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888; /* Warna thumb scrollbar */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Warna thumb saat hover */
+}
+
+/* General Admin Layout - ALL styles scoped under .admin-wrapper */
+.admin-wrapper {
+  display: flex;
+  min-height: 100vh;
+  background-color: #eef2f5; /* Consistent with body background */
+}
+
+/* Sidebar Styling */
+.admin-wrapper .sidebar {
+  width: 260px; /* Sedikit lebih lebar untuk isi */
+  background-color: #2b3a4a; /* Warna lebih gelap dan rich */
+  color: #ecf0f1;
+  padding: 25px 0; /* Padding lebih besar */
+  box-shadow: 4px 0 15px rgba(0, 0, 0, 0.15); /* Bayangan lebih jelas dan lembut */
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  position: sticky; /* Membuat sidebar sticky saat scroll */
+  top: 0;
+  height: 100vh; /* Memenuhi tinggi viewport */
+  overflow-y: auto; /* Scrollbar jika konten sidebar terlalu panjang */
+}
+
+.admin-wrapper .sidebar-header {
+  text-align: center;
+  margin-bottom: 40px; /* Jarak lebih jauh dari navigasi */
+  padding: 0 25px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Garis bawah pemisah yang halus */
+  padding-bottom: 20px;
+}
+
+.admin-wrapper .sidebar-header h2 {
+  margin: 0;
+  font-size: 2em; /* Lebih besar */
+  color: #e0e6eb; /* Sedikit lebih terang */
+  letter-spacing: 1px; /* Sedikit spacing antar huruf untuk judul */
+  font-weight: 700; /* Lebih tebal */
+}
+
+.admin-wrapper .sidebar-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.admin-wrapper .sidebar-nav li {
+  margin-bottom: 8px; /* Jarak antar item nav */
+}
+
+.admin-wrapper .sidebar-nav .nav-link {
+  display: block;
+  padding: 14px 25px; /* Padding lebih besar */
+  color: #cdd5dd; /* Warna teks yang lebih kalem */
+  text-decoration: none;
+  font-size: 1.05em;
+  transition: background-color 0.3s ease, color 0.3s ease, border-left 0.3s ease, padding 0.3s ease;
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden; /* Penting untuk efek pseudo-element */
+}
+
+.admin-wrapper .sidebar-nav .nav-link i {
+  margin-right: 12px; /* Jarak ikon lebih besar */
+  font-size: 1.3em; /* Ikon sedikit lebih besar */
+  color: #88a0b9; /* Warna ikon berbeda dari teks */
+  transition: color 0.3s ease;
+}
+
+/* Pseudo-element for slick hover/active effect */
+.admin-wrapper .sidebar-nav .nav-link::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 5px; /* Lebar border indikator */
+  background-color: #28a745; /* Aksen hijau yang konsisten */
+  transform: translateX(-100%); /* Sembunyikan awalnya */
+  transition: transform 0.3s ease;
+}
+
+.admin-wrapper .sidebar-nav .nav-link:hover {
+  background-color: #3b4d61; /* Background hover lebih gelap */
+  color: #ffffff;
+}
+.admin-wrapper .sidebar-nav .nav-link:hover::before {
+  transform: translateX(0); /* Munculkan border saat hover */
+}
+
+
+.admin-wrapper .sidebar-nav .nav-link.active {
+  background-color: #3b4d61; /* Background aktif sama dengan hover */
+  color: #ffffff;
+  /* border-left: 5px solid #28a745; */ /* Diganti dengan pseudo-element */
+  padding-left: 20px; /* Sesuaikan padding untuk border pseudo-element */
+}
+
+.admin-wrapper .sidebar-nav .nav-link.active::before {
+  transform: translateX(0); /* Pastikan border muncul saat aktif */
+}
+
+.admin-wrapper .sidebar-nav .nav-link:hover i,
+.admin-wrapper .sidebar-nav .nav-link.active i {
+  color: #ffffff; /* Ikon putih saat aktif/hover */
+}
+
+
+.admin-wrapper .sidebar-nav .logout-link {
+  margin-top: auto; /* Push to bottom */
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 20px;
+  color: #dc3545; /* Merah untuk logout */
+}
+
+.admin-wrapper .logout-link:hover {
+  background-color: #dc3545; /* Merah lebih terang */
+  color: #ffffff;
+  border-left-color: #c82333; /* Merah lebih gelap */
+  padding-left: 20px; /* Konsisten dengan nav-link */
+  padding-right: 10px;
+}
+
+
+/* Main Content Styling */
+.admin-wrapper .main-content {
+  flex-grow: 1;
+  padding: 30px;
+  background-color: #eef2f5; /* Consistent with body */
+  overflow-y: auto;
+}
+
+.admin-wrapper .admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #d8e1e8; /* Garis bawah lebih lembut */
+  flex-wrap: wrap;
+}
+
+.admin-wrapper .admin-header h1 {
+  margin: 0;
+  font-size: 2.5em; /* Lebih besar dan menonjol */
+  color: #34495e;
+  font-weight: 700; /* Lebih tebal */
+}
+
+.admin-wrapper .header-actions {
+  display: flex;
+  gap: 15px; /* Jarak antar tombol lebih besar */
+  margin-top: 5px;
+}
+
+/* Section Styling */
+.admin-wrapper .content-section {
+  display: none;
+  background-color: #ffffff;
+  padding: 30px; /* Padding lebih besar */
+  border-radius: 12px; /* Sudut lebih membulat */
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08); /* Bayangan lebih dalam dan halus */
+  margin-bottom: 30px; /* Jarak bawah lebih besar */
+}
+
+.admin-wrapper .content-section.active {
+  display: block;
+}
+
+.admin-wrapper .content-section h2 {
+  color: #34495e;
+  margin-top: 0;
+  margin-bottom: 30px; /* Jarak bawah lebih besar */
+  font-size: 2em; /* Lebih besar */
+  border-bottom: 3px solid #28a745; /* Garis bawah aksen hijau */
+  padding-bottom: 15px; /* Padding bawah lebih besar */
+  display: inline-block;
+  font-weight: 600;
+  text-transform: capitalize; /* Pastikan kapitalisasi konsisten */
+}
+
+/* Dashboard Specifics */
+.admin-wrapper .stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* Min lebar kartu lebih besar */
+  gap: 25px; /* Jarak antar kartu lebih besar */
+  margin-bottom: 40px;
+}
+
+.admin-wrapper .stat-card {
+  background: linear-gradient(135deg, #f0f4f8, #e0e8f0); /* Gradient lembut */
+  padding: 25px; /* Padding lebih besar */
+  border-radius: 10px; /* Sudut lebih bulat */
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07); /* Bayangan lebih halus */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 1px solid #dce4eb; /* Border halus */
+  position: relative;
+  overflow: hidden;
+}
+/* Elemen dekoratif untuk stat card */
+.admin-wrapper .stat-card::before {
+  content: '';
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  width: 80px;
+  height: 80px;
+  background-color: rgba(40, 167, 69, 0.1); /* Warna aksen dengan opacity */
+  border-radius: 50%;
+  transform: scale(0);
+  transition: transform 0.3s ease-out;
+  z-index: 0;
+}
+
+.admin-wrapper .stat-card:hover::before {
+  transform: scale(3); /* Efek lingkaran membesar saat hover */
+}
+
+
+.admin-wrapper .stat-card:hover {
+  transform: translateY(-8px); /* Efek naik lebih tinggi */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12); /* Bayangan lebih dramatis */
+}
+
+.admin-wrapper .stat-card h3 {
+  margin-top: 0;
+  color: #2b3a4a; /* Warna header kartu yang gelap */
+  font-size: 1.4em;
+  margin-bottom: 10px;
+  position: relative; /* Agar di atas pseudo-element */
+  z-index: 1;
+}
+
+.admin-wrapper .stat-card p {
+  font-size: 2.8em; /* Ukuran angka lebih besar */
+  font-weight: 700; /* Lebih tebal */
+  color: #28a745; /* Aksen hijau yang kuat */
+  margin: 0;
+  line-height: 1; /* Hapus spasi baris tambahan */
+  position: relative; /* Agar di atas pseudo-element */
+  z-index: 1;
+}
+
+.admin-wrapper .recent-activities {
+  background-color: #ffffff;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.admin-wrapper .recent-activities h2 {
+  border-bottom: 2px solid #e0e8f0; /* Garis bawah lebih halus */
+  padding-bottom: 15px;
+  margin-bottom: 20px;
+  font-size: 1.8em;
+  color: #34495e;
+}
+
+.admin-wrapper .recent-activities ul {
+  list-style: none;
+  padding: 0;
+}
+
+.admin-wrapper .recent-activities li {
+  background-color: #fdfdfd;
+  border-left: 4px solid #28a745; /* Aksen pada setiap item */
+  padding: 15px 20px; /* Padding lebih besar */
+  margin-bottom: 10px;
+  border-radius: 8px;
+  font-size: 1em;
+  color: #555;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03); /* Bayangan sangat lembut */
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+.admin-wrapper .recent-activities li:hover {
+  background-color: #f0f4f8;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+}
+
+
+/* Table Styling */
+.admin-wrapper .table-container {
+  overflow-x: auto;
+  margin-top: 25px;
+  border-radius: 10px; /* Sudut lebih bulat untuk container */
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05); /* Bayangan pada container */
+}
+
+.admin-wrapper table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #ffffff;
+  border-radius: 10px; /* Sudut lebih bulat */
+  overflow: hidden; /* Pastikan sudut bulat terlihat */
+}
+
+.admin-wrapper table th,
+.admin-wrapper table td {
+  padding: 15px 20px; /* Padding lebih besar */
+  text-align: left;
+  border-bottom: 1px solid #e0e8f0; /* Border lebih halus */
+}
+
+.admin-wrapper table th {
+  background-color: #34495e;
+  color: #ecf0f1;
+  font-weight: 600; /* Sedikit kurang tebal dari bold default */
+  text-transform: uppercase;
+  font-size: 0.9em;
+  letter-spacing: 0.5px; /* Sedikit jarak antar huruf */
+}
+
+.admin-wrapper table tr:nth-child(even) {
+  background-color: #f8fbfd; /* Warna ganjil genap lebih lembut */
+}
+
+.admin-wrapper table tr:hover {
+  background-color: #eaf1f7; /* Hover lebih jelas */
+}
+
+/* Status Badges */
+.admin-wrapper .status-pending,
+.admin-wrapper .status-settlement,
+.admin-wrapper .status-cancelled {
+  padding: 7px 12px; /* Padding lebih besar */
+  border-radius: 25px; /* Lebih bulat */
+  font-weight: 700; /* Lebih tebal */
+  display: inline-block;
+  min-width: 90px; /* Min lebar lebih besar */
+  text-align: center;
+  font-size: 0.8em; /* Ukuran teks lebih kecil agar pas */
+  text-transform: uppercase; /* Huruf kapital semua */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Bayangan pada badge */
+}
+
+.admin-wrapper .status-pending {
+  background-color: #ffc107; /* Kuning terang */
+  color: #343a40; /* Teks gelap */
+}
+
+.admin-wrapper .status-settlement {
+  background-color: #28a745; /* Hijau kuat */
+  color: white;
+}
+
+.admin-wrapper .status-cancelled {
+  background-color: #dc3545; /* Merah kuat */
+  color: white;
+}
+
+/* Form Styling (for settings, add product/user) */
+.admin-wrapper .settings-form,
+.admin-wrapper .add-product-form,
+.admin-wrapper .add-user-form,
+.admin-wrapper .add-category-form { /* Tambahkan .add-category-form */
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Jarak antar grup form lebih besar */
+  max-width: 650px; /* Lebar maksimum form */
+  margin-top: 20px; /* Jarak dari judul section */
+}
+
+.admin-wrapper .form-group {
+  margin-bottom: 0; /* Dihapus karena sudah ada gap di parent */
+}
+
+.admin-wrapper .form-group label {
+  display: block;
+  margin-bottom: 10px; /* Jarak label dari input */
+  font-weight: 600; /* Lebih tebal */
+  color: #4a5568; /* Warna label yang sedikit lebih gelap */
+  font-size: 0.95em;
+}
+
+.admin-wrapper .form-group input[type="text"],
+.admin-wrapper .form-group input[type="email"],
+.admin-wrapper .form-group input[type="password"],
+.admin-wrapper .form-group input[type="tel"],
+.admin-wrapper .form-group input[type="number"],
+.admin-wrapper .form-group select,
+.admin-wrapper .form-group textarea {
+  width: 100%;
+  padding: 12px 15px; /* Padding lebih besar */
+  border: 1px solid #dce4eb; /* Border lebih halus */
+  border-radius: 8px; /* Sudut lebih bulat */
+  font-size: 1em;
+  box-sizing: border-box;
+  background-color: #fdfdfd; /* Background input sedikit off-white */
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Input focus state */
+.admin-wrapper .form-group input[type="text"]:focus,
+.admin-wrapper .form-group input[type="email"]:focus,
+.admin-wrapper .form-group input[type="password"]:focus,
+.admin-wrapper .form-group input[type="tel"]:focus,
+.admin-wrapper .form-group input[type="number"]:focus,
+.admin-wrapper .form-group select:focus,
+.admin-wrapper .form-group textarea:focus {
+  border-color: #007bff; /* Biru terang untuk fokus */
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.15); /* Bayangan biru lembut */
+}
+
+/* Checkbox group in settings */
+.admin-wrapper .form-group input[type="checkbox"] {
+    margin-right: 10px;
+    transform: scale(1.1); /* Sedikit lebih besar */
+    accent-color: #28a745; /* Warna ceklis */
+}
+.admin-wrapper .form-group input[type="checkbox"] + label {
+    display: inline-block;
+    font-weight: normal;
+    color: #333;
+    cursor: pointer; /* Menunjukkan bisa diklik */
+}
+
+/* Analytics specific styles */
+.admin-wrapper .analytics-charts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); /* Min lebar chart lebih besar */
+    gap: 25px;
+    margin-top: 25px;
+}
+
+.admin-wrapper .chart-placeholder {
+    background-color: #f8fbfd; /* Background chart lebih terang */
+    padding: 25px;
+    border-radius: 12px; /* Sudut lebih bulat */
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e0e8f0; /* Border halus */
+}
+.admin-wrapper .chart-placeholder h3 {
+    color: #2b3a4a;
+    font-size: 1.5em;
+    margin-bottom: 15px;
+}
+.admin-wrapper .chart-placeholder canvas {
+    background-color: #ffffff;
+    border: 1px solid #d8e1e8;
+    border-radius: 8px;
+    margin-top: 20px;
+    height: 200px; /* Tinggi tetap untuk konsistensi */
+    width: 100% !important; /* Pastikan lebar 100% */
+}
+.admin-wrapper .chart-placeholder ul {
+    list-style: none; /* Ubah dari inside ke none untuk kontrol lebih baik */
+    padding: 0;
+    text-align: left;
+    margin-top: 20px;
+    max-width: 300px; /* Lebar daftar item */
+    margin-left: auto;
+    margin-right: auto;
+}
+.admin-wrapper .chart-placeholder li {
+    padding: 8px 0;
+    border-bottom: 1px solid #eef2f5; /* Garis pemisah lebih halus */
+    font-size: 0.95em;
+    color: #555;
+    display: flex;
+    justify-content: space-between; /* Untuk menyejajarkan teks dan angka */
+    align-items: center;
+}
+.admin-wrapper .chart-placeholder li:last-child {
+    border-bottom: none;
+}
+.admin-wrapper .chart-placeholder small {
+    display: block;
+    margin-top: 10px;
+    color: #777;
+    font-size: 0.85em;
+}
+
+
+/* General Buttons */
+.admin-wrapper .btn {
+  padding: 12px 22px; /* Padding lebih besar */
+  border: none;
+  border-radius: 8px; /* Sudut lebih bulat */
+  cursor: pointer;
+  font-size: 1em;
+  font-weight: 600;
+  transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px; /* Jarak ikon-teks lebih besar */
+  text-decoration: none;
+  text-transform: uppercase; /* Teks kapital */
+  letter-spacing: 0.5px; /* Jarak antar huruf */
+}
+
+.admin-wrapper .btn i {
+  font-size: 1.1em; /* Ikon sedikit lebih besar */
+}
+
+.admin-wrapper .btn:hover {
+  transform: translateY(-3px); /* Efek naik lebih tinggi */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15); /* Bayangan lebih terlihat */
+}
+
+.admin-wrapper .btn-primary {
+  background-color: #007bff; /* Biru Bootstrap */
+  color: white;
+}
+
+.admin-wrapper .btn-primary:hover {
+  background-color: #0056b3;
+  box-shadow: 0 6px 15px rgba(0, 123, 255, 0.3);
+}
+
+.admin-wrapper .btn-outline-secondary {
+  background-color: transparent;
+  color: #6c757d; /* Abu-abu sekunder */
+  border: 1px solid #6c757d;
+}
+
+.admin-wrapper .btn-outline-secondary:hover {
+  background-color: #6c757d;
+  color: white;
+  box-shadow: 0 6px 15px rgba(108, 117, 125, 0.3);
+}
+
+.admin-wrapper .btn-success {
+  background-color: #28a745; /* Hijau Bootstrap */
+  color: white;
+}
+
+.admin-wrapper .btn-success:hover {
+  background-color: #218838;
+  box-shadow: 0 6px 15px rgba(40, 167, 69, 0.3);
+}
+
+.admin-wrapper .btn-info {
+  background-color: #17a2b8; /* Cyan Bootstrap */
+  color: white;
+}
+
+.admin-wrapper .btn-info:hover {
+  background-color: #138496;
+  box-shadow: 0 6px 15px rgba(23, 162, 184, 0.3);
+}
+
+.admin-wrapper .btn-danger {
+  background-color: #dc3545; /* Merah Bootstrap */
+  color: white;
+}
+
+.admin-wrapper .btn-danger:hover {
+  background-color: #c82333;
+  box-shadow: 0 6px 15px rgba(220, 53, 69, 0.3);
+}
+
+.admin-wrapper .btn-sm {
+  padding: 8px 15px; /* Padding lebih besar untuk sm */
+  font-size: 0.8em; /* Ukuran teks lebih kecil */
+  border-radius: 6px;
+  gap: 6px;
+}
+
+/* Utility classes */
+.admin-wrapper .mt-3 {
+    margin-top: 1.5rem !important; /* Margin lebih besar */
+}
+
+
+/* Responsive Adjustments */
+@media (max-width: 992px) {
+  .admin-wrapper .sidebar {
+    width: 200px; /* Kembali ke 200px untuk layar menengah */
+    padding: 20px 0;
+  }
+  .admin-wrapper .sidebar-header {
+    margin-bottom: 25px;
+    padding: 0 15px;
+  }
+  .admin-wrapper .sidebar-header h2 {
+    font-size: 1.6em;
+  }
+  .admin-wrapper .sidebar-nav .nav-link {
+    padding: 12px 20px;
+    font-size: 1em;
+  }
+  .admin-wrapper .sidebar-nav .nav-link.active {
+    padding-left: 15px;
+  }
+  .admin-wrapper .main-content {
+    padding: 25px;
+  }
+  .admin-wrapper .admin-header h1 {
+    font-size: 2em;
+  }
+  .admin-wrapper .content-section h2 {
+    font-size: 1.8em;
+  }
+  .admin-wrapper .stats-grid {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+  }
+  .admin-wrapper .stat-card h3 {
+    font-size: 1.2em;
+  }
+  .admin-wrapper .stat-card p {
+    font-size: 2.2em;
+  }
+  .admin-wrapper .btn {
+    padding: 10px 18px;
+    font-size: 0.95em;
+    gap: 8px;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-wrapper {
+    flex-direction: column;
+  }
+  .admin-wrapper .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative; /* Hapus sticky pada mobile */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 15px 0;
+  }
+  .admin-wrapper .sidebar-header {
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+  }
+  .admin-wrapper .sidebar-header h2 {
+    font-size: 1.5em;
+  }
+  .admin-wrapper .sidebar-nav ul {
+    flex-direction: row; /* Navigasi menjadi horizontal */
+    justify-content: space-around;
+    padding: 0 10px;
+    overflow-x: auto; /* Scroll jika banyak item */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling di iOS */
+  }
+  .admin-wrapper .sidebar-nav li {
+    margin: 0 8px; /* Jarak horizontal */
+    flex-shrink: 0; /* Cegah item mengecil */
+  }
+  .admin-wrapper .sidebar-nav .nav-link {
+    padding: 10px 12px;
+    font-size: 0.9em;
+    text-align: center;
+    border-left: none; /* Hapus border kiri */
+    border-bottom: 3px solid transparent; /* Ganti ke border bawah */
+    flex-direction: column; /* Ikon di atas teks */
+    gap: 5px; /* Jarak ikon-teks */
+  }
+  .admin-wrapper .sidebar-nav .nav-link i {
+      margin-right: 0; /* Hapus margin kanan ikon */
+      margin-bottom: 4px; /* Tambah margin bawah ikon */
+  }
+  .admin-wrapper .sidebar-nav .nav-link.active {
+    border-bottom-color: #28a745; /* Aksen hijau di bawah */
+    padding-left: 12px; /* Sesuaikan padding */
+  }
+  .admin-wrapper .sidebar-nav .logout-link {
+    margin-top: 15px; /* Jarak dari nav atas */
+    border-top: none;
+    padding-top: 0;
+    border-bottom: 3px solid transparent; /* Untuk konsistensi mobile */
+  }
+  .admin-wrapper .logout-link:hover {
+    border-bottom-color: #dc3545;
+  }
+
+  .admin-wrapper .main-content {
+    padding: 20px;
+  }
+  .admin-wrapper .admin-header {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 20px;
+  }
+  .admin-wrapper .admin-header h1 {
+    font-size: 1.8em;
+    text-align: center;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  .admin-wrapper .header-actions {
+    margin-top: 15px;
+    width: 100%;
+    justify-content: space-between; /* Untuk mobile */
+  }
+  .admin-wrapper .header-actions .btn {
+    width: auto; /* Biarkan tombol menyesuaikan konten */
+    flex-grow: 1; /* Biarkan tombol mengisi ruang */
+    margin: 5px; /* Margin antar tombol */
+    font-size: 0.9em;
+    padding: 10px 15px;
+  }
+  .admin-wrapper .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  .admin-wrapper .content-section {
+    padding: 20px;
+  }
+  .admin-wrapper .content-section h2 {
+    font-size: 1.6em;
+    margin-bottom: 20px;
+  }
+  .admin-wrapper .form-group {
+    gap: 10px;
+  }
+  .admin-wrapper .analytics-charts {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Extremely small screens (e.g., iPhone SE) */
+@media (max-width: 480px) {
+  .admin-wrapper .sidebar-nav ul {
+    flex-wrap: wrap; /* Izinkan item wrap jika terlalu banyak */
+    justify-content: center;
+  }
+  .admin-wrapper .sidebar-nav li {
+    margin: 5px; /* Sedikit lebih banyak margin */
+    min-width: 80px; /* Pastikan ada min-width untuk tombol navigasi */
+  }
+  .admin-wrapper .header-actions .btn {
+    width: 100%; /* Tombol memenuhi lebar penuh jika sangat sempit */
+    margin: 5px 0;
+  }
+}

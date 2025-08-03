@@ -1,0 +1,296 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Riwayat Pesanan | TerusanMinimarket</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="{% static 'global.css' %}" />
+  </head>
+  <body>
+    <header>
+      <h1>🛒 Terusan Minimarket</h1>
+      <div class="header-right">
+        <div class="search-bar">
+          <input
+            id="searchInput"
+            type="text"
+            placeholder="Cari di Terusan Minimarket"
+          />
+          <button>🔍</button>
+        </div>
+
+        <div class="header-icons">
+          <a href="{% url 'home' %}" title="Home">
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/1946/1946433.png"
+              alt="Home Icon"
+            />
+          </a>
+          <a href="{% url 'cart' %}" title="Keranjang">
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/263/263142.png"
+              alt="Cart Icon"
+            />
+          </a>
+        </div>
+
+        <div id="authButtons" class="auth-buttons">
+          <button class="btn btn-outline-primary btn-sm" id="btnLogin">
+            Masuk
+          </button>
+          <button class="btn btn-primary btn-sm" id="btnRegister">
+            Daftar
+          </button>
+        </div>
+
+        <div id="accountMenu" class="account-menu" style="display: none">
+          <div class="account-menu-trigger">
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+              alt="User Icon"
+            />
+            <span id="accountUsername"></span>
+          </div>
+          <div id="accountDropdown" class="account-dropdown">
+            <a href="{% url 'profile' %}">Profil</a>
+            <a href="{% url 'history' %}">Riwayat Pesanan</a>
+            {% if request.user.is_superuser or request.user.is_staff %}
+              <a href="{% url 'admin_dashboard' %}">Admin Dashboard</a>
+            {% endif %}
+            <button id="logoutBtn">Logout</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+      <div class="container-fluid mt-3">
+        <div class="row">
+          <!-- Sidebar Baru -->
+          <div class="col-md-3">
+            <div class="card mb-3">
+              <div class="card-body">
+                <div class="d-flex align-items-center mb-3">
+                  <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="User Avatar" class="rounded-circle me-3" width="60" height="60" />
+                  <div style="overflow: hidden;">
+                    <h5 id="user-name" style="font-size: 15px;"></h5>
+                    <p id="user-email" class="text-muted mb-0" style="font-size: 10px;"></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="list-group list-group-flush">
+                <a href="{% url 'profile' %}" class="list-group-item list-group-item-action">
+                  <i class="bi bi-person-fill"></i> Informasi Akun
+                </a>
+                <a href="{% url 'profile_address' %}" class="list-group-item list-group-item-action">
+                  <i class="bi bi-geo-alt-fill"></i> Daftar Alamat
+                  <p class="small text-muted mb-0">Pengaturan alamat tujuan</p>
+                </a>
+                <a href="{% url 'history' %}" class="list-group-item list-group-item-action active" aria-current="true">
+                  <i class="bi bi-receipt"></i> Transaksi
+                  <p class="small text-muted mb-0">Daftar transaksi pembelanjaanmu</p>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Konten Riwayat Pesanan -->
+          <div class="col-md-9">
+            <div class="card">
+              <div class="card-body">
+                <h2>Riwayat Pesanan Anda</h2>
+                <div id="order-list">
+                  <p
+                    id="noOrdersMessage"
+                    class="text-secondary text-center"
+                    style="display: none"
+                  >
+                    Belum ada pesanan yang ditemukan.
+                  </p>
+                </div>
+                <button
+                  id="loadMoreBtn"
+                  class="btn btn-secondary mt-4"
+                  style="display: none"
+                >
+                  Muat Lebih Banyak
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <footer>
+      <div class="info-section">
+        <div class="info-grid">
+          <div class="method-section">
+            <h3>Metode Pembayaran</h3>
+            <div class="logos payment-logos">
+              <img src="https://buatlogoonline.com/wp-content/uploads/2022/10/Logo-BCA-PNG.png" alt="Bank BCA" />
+              <img src="https://e7.pngegg.com/pngimages/24/85/png-clipart-bank-mandiri-logo-credit-card-bank-text-logo.png" alt="Bank Mandiri" />
+              <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjeXjr9tLxk36ccLwYO4m3m98zyLhfjALPaDtITFj4gG-XTLEIiNT2wasZvIsHs33UjuPzhGKzWZiL5TSVrFzaTBeiPuIYUwv7kRDEafzuVMd4MA0UI33_JzUPUiwfv9ZJoeo_l8xjmOVh-gqP0iG6qejC0Rl2aVfG49Y0QnVCDbadrR6CUdJ7rMQ/w320-h271/Bank%20BRI%20Logo.png" alt="Bank BRI" />
+              <img src="https://images.seeklogo.com/logo-png/35/1/bank-bni-logo-png_seeklogo-355606.png" alt="Bank BNI" />
+              <img src="https://i.pinimg.com/736x/f5/8c/a3/f58ca3528b238877e9855fcac1daa328.jpg" alt="DANA" />
+              <img src="https://i.pinimg.com/736x/60/42/c3/6042c3148add711c946833bbc2b90f6d.jpg" alt="OVO" />
+              <img src="https://assets-a1.kompasiana.com/items/album/2023/04/13/beli-saldo-paypal-via-linkaja-6437c7be4addee244748a212.png" alt="LinkAja" />
+              <img src="https://images.seeklogo.com/logo-png/39/1/quick-response-code-indonesia-standard-qris-logo-png_seeklogo-391791.png" alt="Qris" />
+            </div>
+          </div>
+
+          <div class="customer-service">
+            <h3>Layanan Pelanggan</h3>
+            <ul>
+              <li><a href="{% url 'help' %}">Bantuan & FAQ</a></li>
+              <li><a href="{% url 'tutorial' %}">Cara Belanja</a></li>
+              <li><a href="{% url 'return' %}">Pengembalian Barang</a></li>
+              <li><a href="{% url 'privacy' %}">Kebijakan Privasi</a></li>
+            </ul>
+          </div>
+
+          <div class="contact-info">
+            <h3>Hubungi Kami</h3>
+            <a href="https://wa.me/+6283808802544" target="_blank">
+              <i class="fab fa-whatsapp"></i> Chat via WhatsApp</a
+            >
+            <p>Jam Operasional: 08:00 - 21:00 WIB (Setiap Hari)</p>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 TerusanMinimarket. All Rights Reserved.</p>
+      </div>
+    </footer>
+
+    <div id="toast" class="toast-notification"></div>
+
+    <div id="authModal" class="modal" style="display: none">
+      <div class="modal-content">
+        <span class="close-button" id="closeAuthModal">&times;</span>
+        <div id="loginForm">
+          <h3>Masuk</h3>
+          <form>
+            <div class="form-group">
+              <label for="loginId">Username atau Email</label>
+              <input type="text" id="loginId" name="loginId" required />
+            </div>
+            <div class="form-group">
+              <label for="loginPassword">Password</label>
+              <input
+                type="password"
+                id="loginPassword"
+                name="loginPassword"
+                required
+              />
+            </div>
+            <p class="error-message" id="loginError"></p>
+            <button
+              type="submit"
+              class="btn btn-primary btn-block"
+              id="btnLoginSubmit"
+            >
+              Masuk
+            </button>
+            <p class="mt-2 text-center">
+              Belum punya akun?
+              <a href="#" id="showRegister">Daftar sekarang</a>
+            </p>
+            <p class="text-center">
+              <a href="#" id="showForgotPassword">Lupa Password?</a>
+            </p>
+          </form>
+        </div>
+
+        <div id="registerForm" style="display: none">
+          <h3>Daftar</h3>
+          <form>
+            <div class="form-group">
+              <label for="regUsername">Username</label>
+              <input type="text" id="regUsername" name="regUsername" required />
+            </div>
+            <div class="form-group">
+              <label for="regName">Nama Lengkap</label>
+              <input type="text" id="regName" name="regName" required />
+            </div>
+            <div class="form-group">
+              <label for="regEmail">Email</label>
+              <input type="email" id="regEmail" name="regEmail" required />
+            </div>
+            <div class="form-group">
+              <label for="regPhone">Nomor Telepon</label>
+              <input type="tel" id="regPhone" name="regPhone" />
+            </div>
+            <div class="form-group">
+              <label for="regPassword">Password</label>
+              <input
+                type="password"
+                id="regPassword"
+                name="regPassword"
+                required
+              />
+            </div>
+            <p class="error-message" id="registerError"></p>
+            <button
+              type="submit"
+              class="btn btn-primary btn-block"
+              id="btnRegisterSubmit"
+            >
+              Daftar
+            </button>
+            <p class="mt-2 text-center">
+              Sudah punya akun? <a href="#" id="showLoginFromRegister">Masuk</a>
+            </p>
+          </form>
+        </div>
+
+        <div id="forgotPasswordForm" style="display: none">
+          <h3>Lupa Password</h3>
+          <form>
+            <div class="form-group">
+              <label for="forgotId">Username atau Email</label>
+              <input type="text" id="forgotId" name="forgotId" required />
+            </div>
+            <p class="error-message" id="forgotError"></p>
+            <button
+              type="submit"
+              class="btn btn-primary btn-block"
+              id="btnResetPassword"
+            >
+              Reset Password
+            </button>
+            <p class="mt-2 text-center">
+              <a href="#" id="showLoginFromForgot">Kembali ke Login</a>
+            </p>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div id="returnModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close-button" id="closeReturnModal">&times;</span>
+            <h3>Ajukan Pengembalian Pesanan <span id="returnOrderIdDisplay"></span></h3>
+            <form id="returnForm">
+                <div class="form-group">
+                    <label for="returnReason">Alasan Pengembalian</label>
+                    <textarea id="returnReason" rows="4" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="returnItems">Pilih Item untuk Dikembalikan</label>
+                    <div id="returnItemsList" class="checkbox-list">
+                        </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Kirim Permintaan Pengembalian</button>
+            </form>
+            <p id="returnMessage" class="text-secondary text-center mt-3" style="display: none;"></p>
+        </div>
+    </div>
+
+    <script src="{% static 'profile.js' %}?v=2"></script>
+    <script src="{% static 'dashboard.js' %}"></script>
+    <script src="{% static 'order_history.js'%}?v=2"></script>
+  </body>
+</html>

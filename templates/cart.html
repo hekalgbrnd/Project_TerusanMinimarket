@@ -1,0 +1,148 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Keranjang | TerusanMinimarket</title>
+  <link rel="stylesheet" type="text/css" href="{% static 'global.css' %}">
+</head>
+<body>
+
+<header>
+  <h1>🛒 Terusan Minimarket</h1>
+  <div class="header-right">
+    <div class="search-bar">
+      <input id="searchInput" type="text" placeholder="Cari di Terusan Minimarket" />
+      <button>🔍</button>
+    </div>
+
+    <div class="header-icons">
+      <a href="{% url 'home' %}" title="Home">
+        <img src="https://cdn-icons-png.flaticon.com/512/1946/1946433.png" alt="Home Icon" />
+      </a>
+      <a href="{% url 'cart' %}" title="Keranjang">
+        <img src="https://cdn-icons-png.flaticon.com/512/263/263142.png" alt="Cart Icon" />
+      </a>
+    </div>
+
+    <div id="authButtons" class="auth-buttons">
+      <button class="btn btn-outline-primary btn-sm" id="btnLogin">Masuk</button>
+      <button class="btn btn-primary btn-sm" id="btnRegister">Daftar</button>
+    </div>
+
+    <div id="accountMenu" class="account-menu" style="display: none;">
+      <div class="account-menu-trigger">
+        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="User Icon" />
+        <span id="accountUsername"></span>
+      </div>
+      <div id="accountDropdown" class="account-dropdown">
+        <a href="{% url 'profile' %}">Profil</a>
+        {% if request.user.is_superuser or request.user.is_staff %}
+          <a href="{% url 'admin_dashboard' %}">Admin Dashboard</a>
+        {% endif %}
+        <button id="logoutBtn">Logout</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <h2>Keranjang Belanja</h2>
+  <div class="cart-header">
+    <h3>Produk di Keranjang</h3>
+    <button id="clearCartBtn" class="btn btn-secondary btn-sm">Kosongkan Keranjang</button>
+  </div>
+
+  <div id="cartListContainer" class="cart-list-container"></div>
+
+  <div id="cartSummary" class="cart-summary-card">
+    <h3>Ringkasan Belanja</h3>
+    <div class="cart-summary-item">
+      <span>Subtotal:</span>
+      <span id="cartSubtotal">Rp 0</span>
+    </div>
+    <div class="cart-summary-item">
+      <span>Ongkos Kirim:</span>
+      <span id="cartShipping">Rp 0</span>
+    </div>
+    <div class="cart-summary-total">
+      <span>Total:</span>
+      <span id="cartTotal">Rp 0</span>
+    </div>
+    <button id="checkoutBtn"
+            class="btn btn-success"
+            style="width: 100%; margin-top: 20px;"
+            data-checkout-url="{% url 'checkout' %}">
+      Lanjutkan ke Pembayaran
+    </button>
+  </div>
+
+  <p id="cartEmptyMessage" class="cart-empty" style="display: none;">Keranjang belanja Anda kosong.</p>
+</main>
+
+<footer>
+  &copy; 2025 TerusanMinimarket. All Rights Reserved.
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<!-- Modal Auth -->
+<div id="authModal" class="modal">
+  <div class="modal-content">
+    <span class="close-button" id="closeAuthModal">&times;</span>
+
+    <!-- Login Form -->
+    <div id="loginForm" class="auth-form">
+      <h2>Masuk</h2>
+      <input type="text" id="loginId" placeholder="Username / Email / No. Telepon" required />
+      <input type="password" id="loginPassword" placeholder="Kata Sandi" required />
+      <p id="loginError" class="error-message"></p>
+      <button type="submit" class="btn btn-primary" id="btnLoginSubmit">Masuk</button>
+      <button type="button" class="btn btn-link" id="showRegister">Belum punya akun? Daftar di sini</button>
+      <button type="button" class="btn btn-link" id="showForgotPassword">Lupa Kata Sandi?</button>
+    </div>
+
+    <!-- Register Form -->
+    <div id="registerForm" class="auth-form">
+      <h2>Daftar</h2>
+      <input type="text" id="regUsername" placeholder="Username" required />
+      <input type="text" id="regName" placeholder="Nama Lengkap" required />
+      <input type="email" id="regEmail" placeholder="Email" required />
+      <input type="tel" id="regPhone" placeholder="Nomor Telepon (cth: 081234567890)" required />
+      <input type="password" id="regPassword" placeholder="Kata Sandi" required />
+      <p id="registerError" class="error-message"></p>
+      <button type="submit" class="btn btn-primary" id="btnRegisterSubmit">Daftar</button>
+      <button type="button" class="btn btn-link" id="showLoginFromRegister">Sudah punya akun? Masuk</button>
+    </div>
+
+    <!-- Forgot Password Form -->
+    <div id="forgotPasswordForm" class="auth-form">
+      <h2>Lupa Kata Sandi</h2>
+      <p>Masukkan Username / Email / No. Telepon Anda untuk reset kata sandi.</p>
+      <input type="text" id="forgotId" placeholder="Username / Email / No. Telepon" required />
+      <p id="forgotError" class="error-message"></p>
+      <button type="submit" class="btn btn-primary" id="btnResetPassword">Reset Kata Sandi</button>
+      <button type="button" class="btn btn-link" id="showLoginFromForgot">Kembali ke Login</button>
+    </div>
+  </div>
+</div>
+
+<script src="{% static 'dashboard.js' %}"></script>
+<script src="{% static 'cart.js' %}?v=5"></script>
+
+<!-- Script tambahan untuk handle tombol checkout -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const checkoutBtn = document.getElementById("checkoutBtn");
+    if (checkoutBtn) {
+      checkoutBtn.addEventListener("click", function () {
+        const checkoutUrl = checkoutBtn.getAttribute("data-checkout-url");
+        window.location.href = checkoutUrl;
+      });
+    }
+  });
+</script>
+
+</body>
+</html>

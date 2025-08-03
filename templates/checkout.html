@@ -1,0 +1,106 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Checkout | TerusanMinimarket</title>
+  <link rel="stylesheet" type="text/css" href="{% static '/global.css' %}">
+</head>
+<body>
+
+<header>
+  <h1>🛒 Terusan Minimarket</h1>
+  <div class="header-right">
+    <div class="search-bar">
+      <input id="searchInput" placeholder="Cari di Terusan Minimarket" type="text" />
+      <button>🔍</button>
+    </div>
+
+    <div class="header-icons">
+      <a href="{% url 'home' %}" title="Home">
+        <img src="https://cdn-icons-png.flaticon.com/512/1946/1946433.png" alt="Home Icon" />
+      </a>
+      <a href="{% url 'cart' %}" title="Keranjang">
+        <img src="https://cdn-icons-png.flaticon.com/512/263/263142.png" alt="Cart Icon" />
+      </a>
+    </div>
+
+    <div id="authButtons" class="auth-buttons">
+      <button class="btn btn-outline-primary btn-sm" id="btnLogin">Masuk</button>
+      <button class="btn btn-primary btn-sm" id="btnRegister">Daftar</button>
+    </div>
+
+    <div id="accountMenu" class="account-menu" style="display: none;">
+      <div class="account-menu-trigger">
+        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="User Icon" />
+        <span id="accountUsername"></span>
+      </div>
+      <div id="accountDropdown" class="account-dropdown">
+        <a href="{% url 'profile' %}">Profil</a>
+        {% if request.user.is_superuser or request.user.is_staff %}
+          <a href="{% url 'admin_dashboard' %}">Admin Dashboard</a>
+        {% endif %}
+        <button id="logoutBtn">Logout</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+    <h2>Pembayaran</h2>
+    <div class="checkout-container">
+        <div class="saved-addresses" id="savedAddressesSection" style="display: none;">
+            <h3>Pilih Alamat Tersimpan</h3>
+            <select id="savedAddressSelect">
+                <option value="">-- Pilih Alamat --</option>
+            </select>
+            <button id="useNewAddressBtn" class="btn btn-sm btn-outline-secondary" style="margin-top: 10px;">Gunakan Alamat Baru</button>
+        </div>
+
+        <div class="shipping-address">
+            <h3>Alamat Pengiriman</h3>
+            <label for="receiverName">Nama Penerima:</label>
+            <input type="text" id="receiverName" placeholder="Masukkan nama penerima" />
+
+            <label for="receiverPhone">Nomor Telepon Penerima:</label>
+            <input type="tel" id="receiverPhone" placeholder="Masukkan nomor telepon penerima" />
+
+            <label for="address">Alamat Lengkap:</label>
+            <textarea id="address" rows="3" placeholder="Contoh: Nama Jalan, Nomor Rumah, RT/RW"></textarea>
+
+            <label for="rtRw">RT/RW:</label>
+            <input type="text" id="rtRw" placeholder="Contoh: 001/002" />
+
+            <label for="postalCode">Kode Pos:</label>
+            <input type="text" id="postalCode" placeholder="Masukkan kode pos Anda" />
+        </div>
+
+        <div class="order-summary">
+            <h3>Ringkasan Pesanan</h3>
+            <div id="checkoutItems" class="summary-items-list"></div>
+            <div class="summary-details">
+                <p>Subtotal: <span id="checkoutSubtotal">Rp 0</span></p>
+                <p>Ongkos Kirim: <span id="checkoutShipping">Rp 0</span></p>
+                <p class="total-price">Total: <span id="checkoutTotal">Rp 0</span></p>
+            </div>
+        </div>
+
+        <div class="payment-method">
+            <h3>Metode Pembayaran</h3>
+            <select id="paymentMethod">
+                <option value="bank_transfer">Transfer Bank / E-Wallet</option>
+                <option value="cod">Cash On-Delivery</option>
+            </select>
+        </div>
+
+        <button id="placeOrderBtn" type="button" class="btn btn-success btn-block">Konfirmasi Pesanan</button>
+    </div>
+</main>
+
+<script src="{% static '/dashboard.js' %}"></script>
+<script src="{% static '/cart.js' %}?v=1"></script>
+<script src="{% static '/checkout.js' %}?v=5"></script>
+<script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="Mid-client-8WLcQ5XbC7dbhsQj"></script>
+</body>
+</html>

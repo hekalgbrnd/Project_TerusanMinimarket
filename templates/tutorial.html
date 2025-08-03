@@ -1,0 +1,318 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cara Belanja | TerusanMinimarket</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'global.css' %}" />
+  </head>
+  <body>
+    <header>
+      <h1>🛒 Terusan Minimarket</h1>
+      <div class="header-right">
+        <div class="search-bar">
+          <input
+            id="searchInput"
+            type="text"
+            placeholder="Cari di Terusan Minimarket"
+          />
+          <button>🔍</button>
+        </div>
+
+        <div class="header-icons">
+          <a href="{% url 'home' %}" title="Home">
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/1946/1946433.png"
+              alt="Home Icon"
+            />
+          </a>
+          <a href="{% url 'cart' %}" title="Keranjang">
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/263/263142.png"
+              alt="Cart Icon"
+            />
+          </a>
+        </div>
+
+        <div id="authButtons" class="auth-buttons">
+          <button class="btn btn-outline-primary btn-sm" id="btnLogin">
+            Masuk
+          </button>
+          <button class="btn btn-primary btn-sm" id="btnRegister">
+            Daftar
+          </button>
+        </div>
+
+        <div id="accountMenu" class="account-menu" style="display: none">
+          <div class="account-menu-trigger">
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+              alt="User Icon"
+            />
+            <span id="accountUsername"></span>
+          </div>
+          <div id="accountDropdown" class="account-dropdown">
+            <a href="{% url 'profile' %}">Profil</a>
+            <a href="{% url 'history' %}">Riwayat Pesanan</a>
+            <button id="logoutBtn">Logout</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div class="how-to-shop-container">
+        <h2>Cara Belanja di Terusan Minimarket</h2>
+        <p class="intro-text">
+          Ikuti langkah-langkah mudah di bawah ini untuk memulai pengalaman
+          belanja Anda yang menyenangkan!
+        </p>
+
+        <div class="shopping-steps">
+          <div class="shopping-step">
+            <div class="step-icon">
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/54/54481.png"
+                alt="Search Icon"
+              />
+              <span class="step-number">1</span>
+            </div>
+            <h3>Temukan Produk Anda</h3>
+            <p>
+              Gunakan kolom pencarian di bagian atas halaman atau jelajahi
+              berbagai kategori produk kami untuk menemukan barang yang Anda
+              butuhkan.
+            </p>
+          </div>
+
+          <div class="shopping-step">
+            <div class="step-icon">
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/263/263142.png"
+                alt="Add to Cart Icon"
+              />
+              <span class="step-number">2</span>
+            </div>
+            <h3>Tambahkan ke Keranjang</h3>
+            <p>
+              Setelah menemukan produk, klik pada gambar atau namanya untuk
+              melihat detail lebih lanjut, lalu klik tombol "Tambah ke
+              Keranjang" untuk menyimpannya.
+            </p>
+          </div>
+
+          <div class="shopping-step">
+            <div class="step-icon">
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/891/891462.png"
+                alt="Cart with Arrow Icon"
+              />
+              <span class="step-number">3</span>
+            </div>
+            <h3>Lanjutkan ke Pembayaran (Checkout)</h3>
+            <p>
+              Jika sudah selesai berbelanja, klik ikon keranjang di pojok kanan
+              atas, kemudian klik tombol "Lanjutkan ke Pembayaran" atau
+              "Checkout".
+            </p>
+          </div>
+
+          <div class="shopping-step">
+            <div class="step-icon">
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/684/684809.png"
+                alt="Address Icon"
+              />
+              <span class="step-number">4</span>
+            </div>
+            <h3>Isi Detail Pengiriman</h3>
+            <p>
+              Pastikan Anda mengisi alamat pengiriman yang lengkap dan akurat
+              agar pesanan Anda sampai dengan selamat. Pilih juga opsi
+              pengiriman yang sesuai.
+            </p>
+          </div>
+
+          <div class="shopping-step">
+            <div class="step-icon">
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/2331/2331804.png"
+                alt="Payment Icon"
+              />
+              <span class="step-number">5</span>
+            </div>
+            <h3>Pilih Metode Pembayaran</h3>
+            <p>
+              Kami menyediakan berbagai metode pembayaran seperti Transfer Bank,
+              Cash On Delivery (COD), dan E-Wallet (DANA, OVO, LinkAja). Pilih
+              yang paling nyaman bagi Anda.
+            </p>
+          </div>
+
+          <div class="shopping-step">
+            <div class="step-icon">
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/1005/1005141.png"
+                alt="Checkmark Icon"
+              />
+              <span class="step-number">6</span>
+            </div>
+            <h3>Konfirmasi Pesanan Anda</h3>
+            <p>
+              Periksa kembali semua detail pesanan Anda, mulai dari daftar
+              produk, alamat, hingga metode pembayaran. Jika sudah benar, klik
+              "Konfirmasi Pesanan" atau "Bayar Sekarang".
+            </p>
+          </div>
+
+          <div class="shopping-step">
+            <div class="step-icon">
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/1376/1376182.png"
+                alt="Delivery Truck Icon"
+              />
+              <span class="step-number">7</span>
+            </div>
+            <h3>Pesanan Diproses & Dikirim</h3>
+            <p>
+              Setelah pembayaran terverifikasi, pesanan Anda akan segera kami
+              proses dan kirimkan.
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-link-section">
+          <p>
+            Punya pertanyaan lebih lanjut? Kunjungi halaman
+            <a href="{% url 'help' %}">Bantuan & FAQ</a> kami.
+          </p>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <div class="info-section">
+        <div class="info-grid">
+          <div class="method-section">
+            <h3>Metode Pembayaran</h3>
+            <div class="logos payment-logos">
+              <img src="https://buatlogoonline.com/wp-content/uploads/2022/10/Logo-BCA-PNG.png" alt="Bank BCA" />
+              <img src="https://e7.pngegg.com/pngimages/24/85/png-clipart-bank-mandiri-logo-credit-card-bank-text-logo.png" alt="Bank Mandiri" />
+              <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjeXjr9tLxk36ccLwYO4m3m98zyLhfjALPaDtITFj4gG-XTLEIiNT2wasZvIsHs33UjuPzhGKzWZiL5TSVrFzaTBeiPuIYUwv7kRDEafzuVMd4MA0UI33_JzUPUiwfv9ZJoeo_l8xjmOVh-gqP0iG6qejC0Rl2aVfG49Y0QnVCDbadrR6CUdJ7rMQ/w320-h271/Bank%20BRI%20Logo.png" alt="Bank BRI" />
+              <img src="https://images.seeklogo.com/logo-png/35/1/bank-bni-logo-png_seeklogo-355606.png" alt="Bank BNI" />
+              <img src="https://i.pinimg.com/736x/f5/8c/a3/f58ca3528b238877e9855fcac1daa328.jpg" alt="DANA" />
+              <img src="https://i.pinimg.com/736x/60/42/c3/6042c3148add711c946833bbc2b90f6d.jpg" alt="OVO" />
+              <img src="https://assets-a1.kompasiana.com/items/album/2023/04/13/beli-saldo-paypal-via-linkaja-6437c7be4addee244748a212.png" alt="LinkAja" />
+              <img src="https://images.seeklogo.com/logo-png/39/1/quick-response-code-indonesia-standard-qris-logo-png_seeklogo-391791.png" alt="Qris" />
+            </div>
+          </div>
+
+          <div class="customer-service">
+            <h3>Layanan Pelanggan</h3>
+            <ul>
+              <li><a href="{% url 'help' %}">Bantuan & FAQ</a></li>
+              <li><a href="{% url 'tutorial' %}">Cara Belanja</a></li>
+              <li><a href="{% url 'return' %}">Pengembalian Barang</a></li>
+              <li><a href="{% url 'privacy' %}">Kebijakan Privasi</a></li>
+            </ul>
+          </div>
+
+          <div class="contact-info">
+            <h3>Hubungi Kami</h3>
+            <a href="https://wa.me/+6283808802544" target="_blank">
+              <i class="fab fa-whatsapp"></i> Chat via WhatsApp</a
+            >
+            <p>Jam Operasional: 08:00 - 21:00 WIB (Setiap Hari)</p>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 TerusanMinimarket. All Rights Reserved.</p>
+      </div>
+    </footer>
+
+    <div class="toast" id="toast"></div>
+
+    <div id="authModal" class="modal">
+      <div class="modal-content">
+        <span class="close-button" id="closeAuthModal">&times;</span>
+
+        <div id="loginForm" class="auth-form">
+          <h2>Masuk</h2>
+          <input
+            type="text"
+            id="loginId"
+            placeholder="Username / Email / No. Telepon"
+            required
+          />
+          <input
+            type="password"
+            id="loginPassword"
+            placeholder="Kata Sandi"
+            required
+          />
+          <p id="loginError" class="error-message"></p>
+          <button type="submit" class="btn btn-primary" id="btnLoginSubmit">
+            Masuk
+          </button>
+          <button type="button" class="btn btn-link" id="showRegister">
+            Belum punya akun? Daftar di sini
+          </button>
+          <button type="button" class="btn btn-link" id="showForgotPassword">
+            Lupa Kata Sandi?
+          </button>
+        </div>
+
+        <div id="registerForm" class="auth-form">
+          <h2>Daftar</h2>
+          <input type="text" id="regUsername" placeholder="Username" required />
+          <input type="text" id="regName" placeholder="Nama Lengkap" required />
+          <input type="email" id="regEmail" placeholder="Email" required />
+          <input
+            type="tel"
+            id="regPhone"
+            placeholder="Nomor Telepon (cth: 081234567890)"
+            required
+          />
+          <input
+            type="password"
+            id="regPassword"
+            placeholder="Kata Sandi"
+            required
+          />
+          <p id="registerError" class="error-message"></p>
+          <button type="submit" class="btn btn-primary" id="btnRegisterSubmit">
+            Daftar
+          </button>
+          <button type="button" class="btn btn-link" id="showLoginFromRegister">
+            Sudah punya akun? Masuk
+          </button>
+        </div>
+
+        <div id="forgotPasswordForm" class="auth-form">
+          <h2>Lupa Kata Sandi</h2>
+          <p>
+            Masukkan Username / Email / No. Telepon Anda untuk reset kata sandi.
+          </p>
+          <input
+            type="text"
+            id="forgotId"
+            placeholder="Username / Email / No. Telepon"
+            required
+          />
+          <p id="forgotError" class="error-message"></p>
+          <button type="submit" class="btn btn-primary" id="btnResetPassword">
+            Reset Kata Sandi
+          </button>
+          <button type="button" class="btn btn-link" id="showLoginFromForgot">
+            Kembali ke Login
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="{% static 'dashboard.js' %}"></script>
+    <script src="{% static 'tutorial.js' %}"></script>
+  </body>
+</html>
