@@ -1,14 +1,6 @@
 // cart.js - This file contains cart-specific logic and relies on dashboard.js for global functions
 console.log('cart js loaded2')
 // --- DOM Elements ---
-const cartListContainer = document.getElementById('cartListContainer');
-const cartSubtotalElem = document.getElementById('cartSubtotal');
-const cartShippingElem = document.getElementById('cartShipping');
-const cartTotalElem = document.getElementById('cartTotal');
-const cartEmptyMessage = document.getElementById('cartEmptyMessage');
-const clearCartBtn = document.getElementById('clearCartBtn');
-const checkoutBtn = document.getElementById('checkoutBtn');
-const cartSummaryElement = document.getElementById('cartSummary');
 
 // Biaya pengiriman yang konsisten, diasumsikan dalam IDR
 let SHIPPING_COST = 0
@@ -22,18 +14,17 @@ async function fetchShippingCost() {
 
     const data = await response.json();
 
-    console.log("[INFO] Shipping Cost Data:", data);
-
     const shippingCost = data.shipping_cost || 0;
     const freeShippingMin = data.free_shipping_min || 0;
-    SHIPPING_COST = shippingCost
-    console.log(shippingCost)
-    
-    // Misalnya, update elemen HTML
-    document.getElementById("shippingCostValue").textContent = `Rp ${shippingCost.toLocaleString("id-ID")}`;
-    document.getElementById("freeShippingMinValue").textContent = `Gratis Ongkir min. belanja Rp ${freeShippingMin.toLocaleString("id-ID")}`;
 
-    // Simpan ke global variabel kalau butuh untuk kalkulasi selanjutnya
+    SHIPPING_COST = shippingCost;
+
+    // Update elemen yang memang ADA di halaman
+    const cartShippingElem = document.getElementById("cartShipping");
+    if (cartShippingElem) {
+      cartShippingElem.textContent = `Rp ${shippingCost.toLocaleString("id-ID")}`;
+    }
+
     window.storeShipping = {
       cost: shippingCost,
       freeMin: freeShippingMin
@@ -127,6 +118,18 @@ window.handleRemoveItemFromBackend = async function (event) {
 };
 
 window.renderCart = async function () {
+
+  const cartListContainer = document.getElementById('cartListContainer');
+  const cartSubtotalElem = document.getElementById('cartSubtotal');
+  const cartShippingElem = document.getElementById('cartShipping');
+  const cartTotalElem = document.getElementById('cartTotal');
+  const cartEmptyMessage = document.getElementById('cartEmptyMessage');
+  const clearCartBtn = document.getElementById('clearCartBtn');
+  const checkoutBtn = document.getElementById('checkoutBtn');
+  const cartSummaryElement = document.getElementById('cartSummary');
+
+  if (!cartListContainer) return;
+  
   try {
     const res = await fetch("/api/cart/", {
       method: "GET",
@@ -429,6 +432,9 @@ function calculateTotal(cart) {
 
 // --- Event Listeners and Initializations for Cart Page ---
 document.addEventListener("DOMContentLoaded", function() {
+
+  const clearCartBtn = document.getElementById("clearCartBtn");
+  const checkoutBtn = document.getElementById("checkoutBtn");
   fetchShippingCost();
     // Initial rendering of the cart when the page loads
     window.renderCart();

@@ -38,6 +38,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 import json
 from .models import Order
+from django.db import transaction
 
 # app_name/views.py
 from django.http import JsonResponse
@@ -361,67 +362,74 @@ def order_details_api(request):
         return JsonResponse({'error': 'Pesanan tidak ditemukan'}, status=404)
 
 @csrf_exempt
+@login_required
 def create_transaction(request):
-    if request.method != 'POST':
-        return JsonResponse({"error": "Only POST allowed"}, status=405)
+    if request.method != "POST":
+        return JsonResponse(
+            {"success": False, "message": "Method not allowed"},
+            status=405
+        )
 
     try:
-        # --- Ambil data dari request body ---
         data = json.loads(request.body)
+
         amount = int(data.get("amount", 0))
         shipping_address = data.get("shipping_address", "")
         items_data = data.get("items", [])
 
-        print("ITEMS RECEIVED:", items_data)
-
-        # --- Validasi awal ---
         if amount <= 0 or not shipping_address or not items_data:
-            return JsonResponse({"error": "Data tidak lengkap"}, status=400)
-
-        # --- Siapkan user dan order_id ---
-        user = request.user if request.user.is_authenticated else None
-        order_id = f"TRSMK-{uuid.uuid4().hex[:10]}"
-
-        # --- Buat Order ---
-        order = Order.objects.create(
-            user=user,
-            order_id=order_id,
-            payment_method="Midtrans",
-            payment_status="pending",
-            shipping_address=shipping_address,
-            delivery_estimate="-",
-            total_price=amount,
-            created_at=timezone.now()
-        )
-
-        # --- Buat OrderItem dari items_data ---
-        for item in items_data:
-            product = Product.objects.get(id=item['product_id'])
-            quantity = int(item['quantity'])
-
-              # Kurangi stok produk
-            if product.stock < quantity:
-                return JsonResponse({"success": False, "message": f"Stok tidak cukup untuk {product.name}."}, status=400)
-
-            product.stock -= quantity
-            product.save()
-
-            OrderItem.objects.create(
-                order=order,
-                product=product,
-                quantity=item['quantity'],
-                price=Decimal(str(item['price']))  # Penting: set harga
+            return JsonResponse(
+                {"success": False, "message": "Data tidak lengkap"},
+                status=400
             )
 
-        # --- Kosongkan keranjang jika user login ---
-        if user:
-            try:
-                user_cart = Cart.objects.get(user=user)
-                user_cart.items.all().delete()
-            except Cart.DoesNotExist:
-                pass  # Tidak masalah jika cart tidak ditemukan
+        user = request.user
+        order_id = f"TRSMK-{uuid.uuid4().hex[:10]}"
 
-        # --- Payload untuk Midtrans Snap ---
+        # ==========================
+        # ATOMIC BLOCK (SAMA SEPERTI COD)
+        # ==========================
+        with transaction.atomic():
+
+            # 1️⃣ CEK STOK DULU
+            for item in items_data:
+                product = Product.objects.get(id=item["product_id"])
+                quantity = int(item["quantity"])
+
+                if product.stock < quantity:
+                    return JsonResponse(
+                        {"success": False,
+                         "message": f"Stok tidak cukup untuk {product.name}."},
+                        status=400
+                    )
+
+            # 2️⃣ BUAT ORDER
+            order = Order.objects.create(
+                user=user,
+                order_id=order_id,
+                payment_method="Midtrans",
+                payment_status="pending",
+                shipping_address=shipping_address,
+                delivery_estimate="-",
+                total_price=amount,
+                created_at=timezone.now()
+            )
+
+            # 3️⃣ BUAT ORDER ITEM (SAMA POLA COD)
+            for item in items_data:
+                product = Product.objects.get(id=item["product_id"])
+                quantity = int(item["quantity"])
+
+                OrderItem.objects.create(
+                    order=order,
+                    product=product,
+                    quantity=quantity,
+                    price=product.price   # ← pakai harga dari DB seperti COD
+                )
+
+        # ==========================
+        # 4️⃣ BARU CALL MIDTRANS
+        # ==========================
         payload = {
             "transaction_details": {
                 "order_id": order_id,
@@ -429,32 +437,83 @@ def create_transaction(request):
             },
             "credit_card": {"secure": True},
             "customer_details": {
-                "first_name": user.username if user else "Guest",
-                "email": user.email if user else "guest@example.com"
+                "first_name": user.username,
+                "email": user.email if user.email else f"{user.username}@example.com",
+                "phone": data.get("receiver_phone", "081111111111")
             }
         }
 
-        # --- Kirim request ke Midtrans ---
         response = requests.post(
             "https://app.sandbox.midtrans.com/snap/v1/transactions",
             json=payload,
-            auth=(settings.MIDTRANS_SERVER_KEY, '')
+            auth=(settings.MIDTRANS_SERVER_KEY, "")
         )
-        print(response.json())
 
-        # --- Kirim response Midtrans ke client ---
+        if response.status_code != 201:
+            order.delete()  # rollback manual kalau midtrans gagal
+            return JsonResponse(
+                {"success": False, "message": "Gagal membuat transaksi ke Midtrans"},
+                status=400
+            )
+
         midtrans_response = response.json()
+
+        # 5️⃣ KOSONGKAN CART (SAMA SEPERTI COD)
+        try:
+            cart = Cart.objects.get(user=user)
+            cart.items.all().delete()
+        except Cart.DoesNotExist:
+            pass
+
         midtrans_response["order_id"] = order_id
         return JsonResponse(midtrans_response)
 
     except Product.DoesNotExist:
-        return JsonResponse({"error": "Produk tidak ditemukan"}, status=404)
+        return JsonResponse(
+            {"success": False, "message": "Produk tidak ditemukan"},
+            status=404
+        )
 
     except Exception as e:
         import traceback
         traceback.print_exc()
-        return JsonResponse({"error": str(e)}, status=500)
+        return JsonResponse(
+            {"success": False, "message": str(e)},
+            status=500
+        )
+    
+@csrf_exempt
+def midtrans_callback(request):
+    try:
+        data = json.loads(request.body)
 
+        order_id = data.get("order_id")
+        transaction_status = data.get("transaction_status")
+
+        order = Order.objects.get(order_id=order_id)
+
+        if transaction_status in ["settlement", "capture"] and order.payment_status != "paid":
+            with transaction.atomic():
+                order.payment_status = "paid"
+                order.save()
+
+                for item in order.items.select_related("product"):
+                    product = item.product
+
+                    if product.stock < item.quantity:
+                        raise Exception(f"Stok tidak cukup untuk {product.name}")
+
+                    product.stock -= item.quantity
+                    product.save()
+
+        elif transaction_status in ["cancel", "expire", "deny"]:
+            order.payment_status = "failed"
+            order.save()
+
+        return JsonResponse({"status": "ok"})
+
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=400)
 
 @csrf_exempt
 @login_required

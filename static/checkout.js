@@ -1,5 +1,5 @@
 // checkout.js v2
-console.log("checkout loaded2");
+console.log("checkout loaded3");
 
 function getCSRFToken() {
   const name = "csrftoken";
@@ -127,6 +127,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
   document.getElementById("placeOrderBtn").addEventListener("click", async () => {
+    console.log('button clicked')
     const fieldIds = ["receiverName", "receiverPhone", "address", "rtRw", "postalCode"];
     const values = {};
     for (const id of fieldIds) {
@@ -143,6 +144,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       ${values.address}, RT/RW: ${values.rtRw}, ${values.postalCode}
     `.trim();
 
+    console.log("TOTAL =", total);
+    console.log("CART ITEMS =", cartItems);
     const orderData = {
       amount: total,
       shipping_address: fullShippingAddress,
@@ -177,6 +180,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
+    console.log('midtrans')
     // MIDTRANS
     try {
       const res = await fetch("/api/create-transaction/", {
@@ -190,10 +194,18 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
 
       const data = await res.json();
+
+      console.log("RESPONSE STATUS:", res.status);
+      console.log("RESPONSE DATA:", data);
+
+      if (!res.ok) {
+        return showToast(data.message || data.error || "Terjadi kesalahan.", "error");
+      }
+
       if (data.token) {
         snap.pay(data.token, {
-          onSuccess: (result) => {
-            window.location.href = `/order_success/?order_id=${result.order_id}`;
+          onSuccess: () => {
+            window.location.href = `/order_success/?order_id=${encodeURIComponent(data.order_id)}`;
           },
           onError: (err) => {
             showToast("Pembayaran gagal: " + err.message, "error");
@@ -203,8 +215,9 @@ document.addEventListener("DOMContentLoaded", async () => {
           }
         });
       } else {
-        showToast("Gagal membuat transaksi.", "error");
+        showToast("Token tidak ditemukan dari Midtrans.", "error");
       }
+
     } catch (error) {
       console.error("Checkout error:", error);
       showToast("Terjadi kesalahan saat proses checkout.", "error");
